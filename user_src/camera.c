@@ -7,16 +7,16 @@
 
 volatile int32_t scanBuf[128];
 volatile float lineIndex = 0;
-volatile int32_t integrationTime = 0;
-volatile int32_t integrationInterval = 0;
-volatile int32_t startTime = 0;
+volatile int32_t integrationTime_us = 0;
+volatile int32_t integrationInterval_us = 0;
+volatile int32_t startTime_us = 0;
 
 /*
  * readCameraStart() - Start the camera read routine
  */
 void readCameraStart(void)
 {
-	startTime = micros();
+	startTime_us = micros();
 	scanLine();
 	
 	// Flush garbage values
@@ -43,7 +43,7 @@ void readCameraStop(void)
 	}
 	
 	// Wait for remaining integration time
-	elapse_us(integrationTime, startTime);
+	elapse_us(integrationTime_us, startTime_us);
 	
 	// Read values into buffer
 	SI_HI;
@@ -69,6 +69,9 @@ void readCamera(void)
 	readCameraStop();
 }
 
+/*
+ * scanLine() - Detects line position 
+ */
 void scanLine(void) {
 	// Scan for line
 	int32_t maxIndex = 0;

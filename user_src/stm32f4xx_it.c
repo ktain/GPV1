@@ -67,6 +67,9 @@ void EXTI9_5_IRQHandler(void)
 	}
 }
 
+/*
+ * TIM3_IRQHandler() - Line scan camera interrupt handler
+ */
 void TIM3_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {

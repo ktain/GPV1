@@ -4,6 +4,9 @@
 #include "motorcontrol.h"
 #include "camera.h"
 
+/*
+ * loadSettings() - Load settings before setting up peripherals
+ */
 void loadSettings(void) {
 	
 	counts_per_mm = 68.9;
@@ -12,8 +15,8 @@ void loadSettings(void) {
 	targetAccX = 5.0;
 	targetDecX = 5.0;
 	
-	integrationInterval = 5000;	// integration interrupt interval
-	integrationTime = 4500;		// integration time in us
+	integrationInterval_us = 5000;	// integration interrupt interval
+	integrationTime_us = 4500;	// integration time in us
 	
 	// Camera tilt settings
 	servo1CenterPwm = 1700;		// Lower == see further 1650

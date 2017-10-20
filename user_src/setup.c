@@ -25,7 +25,6 @@ void setup()
 	motor_setup();
 	encoder_setup();
 	camera_setup();
-	interrupt_setup();
 }
 
 
@@ -75,7 +74,9 @@ static void led_setup(void)
 }
 
 
-/* button_setup() - Setup user pushbuttons */
+/* 
+ * button_setup() - Setup user pushbuttons 
+ */
 static void button_setup(void) 
 {
 	/* Declare EXTI, GPIO, and NVIC 32-bit structs to work with */
@@ -142,7 +143,9 @@ static void button_setup(void)
 	NVIC_Init(&NVIC_InitStructure);
 }
  
-/* usart_setup() - setup serial port communication */
+/* 
+ * usart_setup() - Setup serial port communication
+ */
 static void usart_setup(void) 
 {
 	/* Declare GPIO and USART 32-bit structs to work with */
@@ -190,6 +193,9 @@ static void usart_setup(void)
 	USART_Cmd(USART1, ENABLE);
 }
 
+/* 
+ * adc_setup() - Setup ADCs
+ */
 static void adc_setup(void)
 {
 	/* Declare ADC and GPIO structs to work with */
@@ -234,6 +240,10 @@ static void adc_setup(void)
 	ADC_Cmd(ADC1, ENABLE);
 }
 
+/* 
+ * readADC() - reads and returns ADC values from the master ADC (ADC1)
+ * http://www.micromouseonline.com/2009/05/26/simple-adc-use-on-the-stm32/
+ */
 uint32_t readADC(uint32_t channel)
 {
 	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_3Cycles);
@@ -242,6 +252,9 @@ uint32_t readADC(uint32_t channel)
 	return ADC_GetConversionValue(ADC1);
 }
 
+/* 
+ * motor_setup() - setup DC motor servos
+ */
 static void motor_setup(void)
 {
 	/* Declare structs to work with */
@@ -281,8 +294,8 @@ static void motor_setup(void)
 	//PWM frequency = 84000000 / (19999+1) / (83+1) = 50Hz
 
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (20000) - 1;	// scale PWM from 0-19999
-	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;	// 84=50Hz
+	TIM_TimeBaseStructure.TIM_Period = (20000) - 1;	// scale PWM duty cycle from 0-19999 ms
+	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;	// 84=50Hz servo updates
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
@@ -364,6 +377,9 @@ static void motor_setup(void)
 	TIM_Cmd(TIM2, ENABLE);
 }
 
+/* 
+ * encoder_setup() - Setup quadrature encoder
+ */
 static void encoder_setup(void)
 {
 	/* Declare GPIO and TIM struct to work with */
@@ -390,6 +406,9 @@ static void encoder_setup(void)
 	TIM_Cmd(TIM5, ENABLE);
 }
 
+/* 
+ * camera_setup() - Setup line scan camera and integration time
+ */
 static void camera_setup(void) 
 {
 	/* Declare a GPIO struct to work with*/
@@ -415,10 +434,7 @@ static void camera_setup(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 	
-}
-
-static void interrupt_setup(void) 
-{
+	
 	/* Declare TIM, and NVIC struct to work with */
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	NVIC_InitTypeDef        NVIC_InitStructure;
@@ -435,7 +451,7 @@ static void interrupt_setup(void)
 	//PWM frequency = 84000000 / (period + 1) / (prescaler + 1)
 	
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (integrationInterval) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
+	TIM_TimeBaseStructure.TIM_Period = (integrationInterval_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
 	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;

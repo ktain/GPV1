@@ -56,7 +56,6 @@ int32_t fputc(int32_t c, FILE *f)
  * and receive the char over the USART peripheral
  *
  * Return the char read
- * UNTESTED
  */
 int32_t fgetc(FILE *f) 
 {

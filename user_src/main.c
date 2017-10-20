@@ -31,7 +31,7 @@ void button0(void)
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.7);
+	setSpeedX(0.0);
 	
 	/*
 	while(1) {
@@ -90,7 +90,6 @@ void button0(void)
 
 void button1(void)
 {
-	
 	SERVO_OFF;
 	setSpeedX(0);
 	//setPwm(0);
