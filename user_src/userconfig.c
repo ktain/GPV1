@@ -15,9 +15,10 @@ void loadSettings(void) {
 	kdX = 0.5;
 	targetAccX = 10.0;
 	targetDecX = 10.0;
+	motorMaxPwm = 500;
 	
-	integrationInterval_us = 5000;	// integration interrupt interval
-	integrationTime_us = 4500;	// integration time in us < interval
+	integrationInterval_us = 20000;	// integration interval
+	integrationTime_us = 20000;	// integration time in us < interval
 	
 	// Camera tilt settings
 	servo1CenterPwm = 2100;		// Lower == see further 1650

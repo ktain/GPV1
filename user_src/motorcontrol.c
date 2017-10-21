@@ -50,6 +50,7 @@ volatile float prevErrorX = 0;
 volatile float errorX = 0;
 volatile float posPwmX = 0;
 volatile float motorPwm = 0;
+volatile float motorMaxPwm = 0;
 
 void updateSpeed(void) 
 {
@@ -169,8 +170,8 @@ void resetMotorParameters(void) {
 // Set motor pwm
 void setPwm(int32_t pwm)
 {
-	if (pwm > 999)
-		pwm = 999;
+	if (pwm > motorMaxPwm)
+		pwm = motorMaxPwm;
 	else if (pwm < 0)
 		pwm = 0;
 

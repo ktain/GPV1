@@ -52,12 +52,12 @@ void readCameraStop(void)
 	SI_HI;
 	CLK_HI;
 	delay_us(10);
-	scanBuf[0] = read_Out1;
+	scanBuf[0] = read_AO1;	// AO normal
 	SI_LO;
 	CLK_LO;
 	for (int32_t i = 1; i < 128; i++) {
 		CLK_HI;
-		scanBuf[i] = read_Out1;
+		scanBuf[i] = read_AO1;
 		CLK_LO;
 	}
 	

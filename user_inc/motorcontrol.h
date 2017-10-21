@@ -44,6 +44,7 @@ extern volatile float prevErrorX;
 extern volatile float errorX;
 extern volatile float posPwmX;
 extern volatile float motorPwm;
+extern volatile float motorMaxPwm;
 
 extern volatile float kpX;
 extern volatile float kdX;

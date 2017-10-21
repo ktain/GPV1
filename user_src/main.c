@@ -23,6 +23,7 @@ void systick(void)
 	
 	updateDisplay();
 	
+	// display pwm
 	static int i = 0;
 	if (i < 100)
 		i++;
@@ -36,14 +37,14 @@ void button0(void)
 {
 	delay_ms(500);
 	
-	SERVO_ON;
+	//SERVO_ON;
 	setServo1Pwm(servo1CenterPwm); 
 	delay_ms(500);
 
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.3);
+	setSpeedX(0.0);
 	
 	/*
 	while(1) {
@@ -59,6 +60,18 @@ void button0(void)
 		printf("\r\n");
 	}
 	*/
+
+	int32_t scanBufShot[128];
+	while(1) {
+		int32_t i;
+		for (i = 0; i < 128; i++)
+			scanBufShot[i] = scanBuf[i];
+		
+		for (int32_t i = 0; i < 128; i++) {
+			printf("%d %d\n", i+1, scanBufShot[i]);
+		}
+		delay_ms(20);
+	}
 
 	/*
 	printf("\r\n\n");
@@ -77,7 +90,7 @@ void button0(void)
 		printf("%-9d|", i*100);
 	printf("%-9d|", i*100);
 	printf("\r\n");
-	*/
+	
 	
 	/*
 	printf("\r\n\n");
@@ -104,6 +117,7 @@ void button1(void)
 {
 	SERVO_OFF;
 	setSpeedX(0);
+	disableSpeedControl();
 	//setPwm(0);
 }
 
