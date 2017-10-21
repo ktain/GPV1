@@ -13,6 +13,7 @@
 
 void systick(void) 
 {
+	readCamera();
 	if (useSpeedControl) {
 		updateSpeed();
 		speedControl();
@@ -21,6 +22,14 @@ void systick(void)
 	updateServo3();	// steering
 	
 	updateDisplay();
+	
+	static int i = 0;
+	if (i < 100)
+		i++;
+	else {
+		displayInt(motorPwm);
+		i = 0;
+	}
 }
 
 void button0(void)
@@ -34,7 +43,7 @@ void button0(void)
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(1.0);
+	setSpeedX(0.3);
 	
 	/*
 	while(1) {
@@ -103,11 +112,11 @@ int main(void)
 	loadSettings();
 	setup();
 	
-	delay_ms(500);
 	displayVoltage();
+	delay_ms(1000);
+	
 	
 	while(1) {
-		
 		//printf("volt %5d|IS %d|AO1 %4d|Out1 %4d|AO2 %4d|Out2 %4d|enc %6d\n\r", read_Voltage, read_Current, read_AO1, read_Out1, read_AO2, read_Out2, getEncCount());
 	}
 }

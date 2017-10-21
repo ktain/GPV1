@@ -1,5 +1,6 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
+#include <stdbool.h>
 
 #include "setup.h"
 #include "delay.h"
@@ -10,6 +11,7 @@ volatile float lineIndex = 0;
 volatile int32_t integrationTime_us = 0;
 volatile int32_t integrationInterval_us = 0;
 volatile int32_t startTime_us = 0;
+volatile bool isIntegrating = 0;
 
 /*
  * readCameraStart() - Start the camera read routine
@@ -17,6 +19,7 @@ volatile int32_t startTime_us = 0;
 void readCameraStart(void)
 {
 	startTime_us = micros();
+	isIntegrating = 1;
 	scanLine();
 	
 	// Flush garbage values
@@ -43,7 +46,7 @@ void readCameraStop(void)
 	}
 	
 	// Wait for remaining integration time
-	elapse_us(integrationTime_us, startTime_us);
+	// elapse_us(integrationTime_us, startTime_us);
 	
 	// Read values into buffer
 	SI_HI;
@@ -61,13 +64,18 @@ void readCameraStop(void)
 }
 
 /*
- * readCamera() - Start, wait, and stop the camera read routine
- *	 Blocking
+ * readCamera() - Start, wait, and stop the camera read routine using systick
  */
 void readCamera(void)
 {
-	readCameraStart();
-	//readCameraStop();
+	if (!isIntegrating)
+		readCameraStart();
+	if (micros() - startTime_us >= integrationTime_us) {
+		readCameraStop();
+	}
+	if (micros() - startTime_us >= integrationInterval_us) {
+		isIntegrating = 0;
+	}
 }
 
 /*

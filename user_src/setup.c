@@ -26,6 +26,7 @@ void setup()
 	motor_setup();
 	encoder_setup();
 	camera_setup();
+	//timer_setup();
 	display_setup();
 }
 
@@ -351,7 +352,7 @@ static void motor_setup(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOA, &GPIO_InitStructure); 
 
-	/* Connect TIM9 pins to AF */  
+	/* Connect TIM2 pins to AF */  
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_TIM2);
 	
 	//TIM clock = APB clock * 2 = 84MHz
@@ -436,8 +437,10 @@ static void camera_setup(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 	
-	
-	
+}
+
+void timer_setup()
+{
 	// Setting up timers and intterupts
 	// https://www.fmf.uni-lj.si/~ponikvar/STM32F407%20project/Ch11%20-%20Interrupts%20and%20Timer.pdf
 	
@@ -465,11 +468,12 @@ static void camera_setup(void)
 
 	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);	// Enable timer interrupts
 	TIM_Cmd(TIM3, ENABLE);				// Enable timer
-	
+
 }
 
 
-void display_setup() {
+static void display_setup() 
+{
 	GPIO_InitTypeDef GPIO_InitStructure;
 	SPI_InitTypeDef SPI_InitStruct;
 
