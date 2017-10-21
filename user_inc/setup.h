@@ -18,7 +18,7 @@
 #define ALL_LED_OFF	LED1_OFF; LED2_OFF; LED3_OFF; LED4_OFF
 
 /* ADC Pinout */
-#define read_Voltage	((int32_t)(readADC(10)*3.22))
+#define read_Voltage	((int32_t)(readADC(10)*3.36))	// 11000 == 11V
 #define read_Current	readADC(12)
 #define read_AO1	readADC(14)
 #define read_Out1	readADC(15)
@@ -35,11 +35,17 @@
 #define SERVO2_PWM	(TIM4->CCR3)
 #define SERVO3_PWM	(TIM4->CCR2)
 
-/* Camera MACRO control*/
+/* Camera MACRO control */
 #define CLK_HI		GPIO_SetBits(GPIOC, GPIO_Pin_9)
 #define CLK_LO		GPIO_ResetBits(GPIOC, GPIO_Pin_9)
 #define SI_HI		GPIO_SetBits(GPIOC, GPIO_Pin_8)
 #define SI_LO		GPIO_ResetBits(GPIOC, GPIO_Pin_8)
+
+// Display MACRO control */
+#define RS_1	GPIO_SetBits(GPIOB, GPIO_Pin_14)	// select control register
+#define RS_0	GPIO_ResetBits(GPIOB, GPIO_Pin_14)	// select data register
+#define CE_1	GPIO_SetBits(GPIOC, GPIO_Pin_6)		// disable data writing, latch on
+#define CE_0	GPIO_ResetBits(GPIOC, GPIO_Pin_6)	// enable data writing
 
 void setup(void);
 void systick_setup(void);
@@ -50,7 +56,7 @@ void adc_setup(void);
 void motor_setup(void);
 void encoder_setup(void);
 void camera_setup(void);
-void interrupt_setup(void);
+void display_setup(void);
 uint32_t readADC(uint32_t channel);
 
 extern volatile int32_t voltage;

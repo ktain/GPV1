@@ -3,6 +3,7 @@
 
 #include "motorcontrol.h"
 #include "camera.h"
+#include "display.h"
 
 /*
  * loadSettings() - Load settings before setting up peripherals
@@ -15,11 +16,11 @@ void loadSettings(void) {
 	targetAccX = 5.0;
 	targetDecX = 5.0;
 	
-	integrationInterval_us = 5000;	// integration interrupt interval
-	integrationTime_us = 4500;	// integration time in us
+	integrationInterval_us = 20000;	// integration interrupt interval
+	integrationTime_us = 10000;	// integration time in us < interval
 	
 	// Camera tilt settings
-	servo1CenterPwm = 1700;		// Lower == see further 1650
+	servo1CenterPwm = 1800;		// Lower == see further 1650
 	servo1MinPwm = 1500;
 	servo1MaxPwm = 2100;
 	
@@ -36,5 +37,9 @@ void loadSettings(void) {
 	servo3MaxPwm = 1760;
 	steering_Kp = 10.0;
 	steering_Kd = 0.0;
+	
+	// Display settings
+	displayDelay_ms = 200;
+	displayBrightness = 4;	//0-15
 }
 

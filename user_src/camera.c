@@ -62,15 +62,16 @@ void readCameraStop(void)
 
 /*
  * readCamera() - Start, wait, and stop the camera read routine
+ *	 Blocking
  */
 void readCamera(void)
 {
 	readCameraStart();
-	readCameraStop();
+	//readCameraStop();
 }
 
 /*
- * scanLine() - Detects line position 
+ * scanLine() - Detect and update line position 
  */
 void scanLine(void) {
 	// Scan for line

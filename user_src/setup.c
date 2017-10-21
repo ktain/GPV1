@@ -11,6 +11,7 @@
 #include "setup.h"
 #include "delay.h"
 #include "camera.h"
+#include "display.h"
 
 /*
  * setup() - calls all other peripheral setup routines
@@ -25,6 +26,7 @@ void setup()
 	motor_setup();
 	encoder_setup();
 	camera_setup();
+	display_setup();
 }
 
 
@@ -435,6 +437,10 @@ static void camera_setup(void)
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 	
 	
+	
+	// Setting up timers and intterupts
+	// https://www.fmf.uni-lj.si/~ponikvar/STM32F407%20project/Ch11%20-%20Interrupts%20and%20Timer.pdf
+	
 	/* Declare TIM, and NVIC struct to work with */
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	NVIC_InitTypeDef        NVIC_InitStructure;
@@ -457,6 +463,69 @@ static void camera_setup(void)
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-	TIM_Cmd(TIM3, ENABLE);				// Enable timer
 	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);	// Enable timer interrupts
+	TIM_Cmd(TIM3, ENABLE);				// Enable timer
+	
+}
+
+
+void display_setup() {
+	GPIO_InitTypeDef GPIO_InitStructure;
+	SPI_InitTypeDef SPI_InitStruct;
+
+	// Enable SPI peripheral clock
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
+
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+
+	// Connect SPI pins to AF5
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_SPI2);
+	GPIO_PinAFConfig(GPIOB, GPIO_PinSource15, GPIO_AF_SPI2);
+
+	// GPIO_C
+	GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
+	
+	// CLK DATA_IN
+	GPIO_InitStructure.GPIO_Pin   = GPIO_Pin_13 | GPIO_Pin_15;
+	GPIO_Init(GPIOB, &GPIO_InitStructure);	
+	
+	// RS
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOB, &GPIO_InitStructure); 
+
+	// GPIOD
+	// CE
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOC, &GPIO_InitStructure); 
+
+	// Configure SPI clock rate
+	SPI_I2S_DeInit(SPI2);
+	SPI_StructInit(&SPI_InitStruct);
+	SPI_InitStruct.SPI_Mode = SPI_Mode_Master;
+	SPI_InitStruct.SPI_Direction = SPI_Direction_1Line_Tx;
+	SPI_InitStruct.SPI_NSS = SPI_NSS_Soft;
+	SPI_InitStruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_2;
+
+	SPI_Init(SPI2, &SPI_InitStruct);
+	SPI_SSOutputCmd(SPI2, ENABLE);
+
+	SPI_Cmd(SPI2, ENABLE);
+	SPI_NSSInternalSoftwareConfig(SPI2, ENABLE);
+
+	CE_1;
+	
+	setDisplayBrightness(displayBrightness);
+	clearDisplay();
 }

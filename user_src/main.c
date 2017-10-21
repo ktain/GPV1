@@ -9,6 +9,7 @@
 #include "encoder.h"
 #include "motorcontrol.h"
 #include "camera.h"
+#include "display.h"
 
 void systick(void) 
 {
@@ -17,21 +18,23 @@ void systick(void)
 		speedControl();
 	}
 	updateServo2();
-	updateServo3();
+	updateServo3();	// steering
+	
+	updateDisplay();
 }
 
 void button0(void)
 {
-	delay_ms(200);
+	delay_ms(500);
 	
 	SERVO_ON;
 	setServo1Pwm(servo1CenterPwm); 
-	delay_ms(200);
+	delay_ms(500);
 
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.0);
+	setSpeedX(1.0);
 	
 	/*
 	while(1) {
@@ -98,13 +101,13 @@ void button1(void)
 int main(void)
 {
 	loadSettings();
-	
 	setup();
+	
+	delay_ms(500);
+	displayVoltage();
+	
 	while(1) {
+		
 		//printf("volt %5d|IS %d|AO1 %4d|Out1 %4d|AO2 %4d|Out2 %4d|enc %6d\n\r", read_Voltage, read_Current, read_AO1, read_Out1, read_AO2, read_Out2, getEncCount());
-		LED1_ON;
-		delay_ms(500);
-		LED1_OFF;
-		delay_ms(500);
 	}
 }
