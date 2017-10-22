@@ -31,6 +31,18 @@ void systick(void)
 		displayInt(motorPwm);
 		i = 0;
 	}
+	
+	// UART commands
+	static uint16_t tmp;
+	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET) {
+		tmp = USART_ReceiveData(USART1);
+		// Kill switch
+		if (tmp == 's') {
+			button1();
+		}
+
+	}
+	
 }
 
 void button0(void)
@@ -44,7 +56,7 @@ void button0(void)
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.0);
+	setSpeedX(0.5);
 	
 	/*
 	while(1) {
@@ -61,6 +73,7 @@ void button0(void)
 	}
 	*/
 
+	/*
 	int32_t scanBufShot[128];
 	while(1) {
 		int32_t i;
@@ -72,6 +85,7 @@ void button0(void)
 		}
 		delay_ms(20);
 	}
+	*/
 
 	/*
 	printf("\r\n\n");
