@@ -135,7 +135,7 @@ void setSteeringPwm(int32_t pwm)
 	else if (pwm < steeringMinPwm)
 		pwm = steeringMinPwm;
 	
-	SERVO3_PWM = pwm;
+	STEERING_PWM = pwm;
 }
 
 // Set translational speed

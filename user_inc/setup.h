@@ -31,9 +31,9 @@
 #define SERVO_ON	GPIO_SetBits(GPIOB, GPIO_Pin_3)
 #define SERVO_OFF	GPIO_ResetBits(GPIOB, GPIO_Pin_3)
 #define MTR_PWM		(TIM2->CCR3)
-#define SERVO1_PWM	(TIM4->CCR4)
-#define SERVO2_PWM	(TIM4->CCR3)
-#define SERVO3_PWM	(TIM4->CCR2)
+#define NEAR_CAM_PWM	(TIM4->CCR4)
+#define FAR_CAM_PWM	(TIM4->CCR3)
+#define STEERING_PWM	(TIM4->CCR2)
 
 /* Camera MACRO control */
 #define CLK_HI		GPIO_SetBits(GPIOC, GPIO_Pin_9)
@@ -41,11 +41,11 @@
 #define SI_HI		GPIO_SetBits(GPIOC, GPIO_Pin_8)
 #define SI_LO		GPIO_ResetBits(GPIOC, GPIO_Pin_8)
 
-// Display MACRO control */
-#define RS_1	GPIO_SetBits(GPIOB, GPIO_Pin_14)	// select control register
-#define RS_0	GPIO_ResetBits(GPIOB, GPIO_Pin_14)	// select data register
-#define CE_1	GPIO_SetBits(GPIOC, GPIO_Pin_6)		// disable data writing, latch on
-#define CE_0	GPIO_ResetBits(GPIOC, GPIO_Pin_6)	// enable data writing
+/* Display MACRO control */
+#define RS_HI	GPIO_SetBits(GPIOB, GPIO_Pin_14)	// select control register
+#define RS_LO	GPIO_ResetBits(GPIOB, GPIO_Pin_14)	// select data register
+#define CE_HI	GPIO_SetBits(GPIOC, GPIO_Pin_6)		// disable data writing, latch on
+#define CE_LO	GPIO_ResetBits(GPIOC, GPIO_Pin_6)	// enable data writing
 
 void setup(void);
 void systick_setup(void);
@@ -59,7 +59,5 @@ void camera_setup(void);
 void timer_setup(void);
 void display_setup(void);
 uint32_t readADC(uint32_t channel);
-
-extern volatile int32_t voltage;
 
 #endif

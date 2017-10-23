@@ -20,7 +20,6 @@ void systick(void)
 	}
 
 	updateSteeringAngle();
-	
 	updateDisplay();
 	
 	// display 
@@ -33,7 +32,7 @@ void systick(void)
 		i = 0;
 	}
 	
-	// UART commands
+	// Process UART commands
 	static uint16_t tmp;
 	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) != RESET) {
 		tmp = USART_ReceiveData(USART1);

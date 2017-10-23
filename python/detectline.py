@@ -1,13 +1,3 @@
-'''
-# Draw a thick red hline at y=1 that spans the xrange
-plt.axhline(y=threshold, linewidth=2, color='#d62728')
-
-# Draw a default vline at x=1 that spans the yrange
-plt.axvline(x=1)
-
-plt.axis([0, 2, 0, 3])
-'''
-
 # Track line position
 # import packages and modules
 import serial
@@ -115,7 +105,7 @@ try:
             nearest_peak = get_nearest_peak(array128, threshold)
 
             # Plot
-            plt.plot(array128, linewidth=2)
+            plt.plot(array128, linewidth=2, ls='steps')
             plt.ylim(0, 1000)
             plt.xlim(0, 127)
             plt.grid(True)
@@ -124,12 +114,12 @@ try:
             plt.axhline(y=threshold, linewidth=2, alpha=0.5, color='red')
            
             # Plot center line
-            plt.axvline(x=63.5, linewidth=1, ls='dashed', alpha=0.2, color='grey')
+            plt.axvline(x=63.5, linewidth=1, ls='dashed', alpha=0.5, color='grey')
             
             # Plot max index
             plt.axvline(x=max_index, linewidth=15, alpha=0.5, color='green')
             
-            # Plot first peak
+            # Plot nearest peak
             plt.axvline(x=nearest_peak, linewidth=15, alpha=0.5, color='brown')
             
             

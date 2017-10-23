@@ -6,7 +6,7 @@ void readCameraStop(void);
 void readCamera(void);
 
 void detectLinePos(void);
-void moving_avg_filter (volatile int32_t *arr, int32_t size);
+void movingAvgFilter(volatile int32_t *arr, int32_t size);
 
 extern volatile int32_t scanBuf[128];
 extern volatile float linePos;

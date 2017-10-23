@@ -13,29 +13,30 @@ int32_t displayIndex;
 
 void writeControlRegister(char c)
 {
-	RS_1;	// Switch to control register
-	CE_0;	// Enable data writing
+	RS_HI;	// Switch to control register
+	CE_LO;	// Enable data writing
 
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 	SPI_I2S_SendData(SPI2, c);
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) == SET);
 
-	CE_1;	// Latch on
-	RS_0;	// Switch back to data register
+	CE_HI;	// Latch on
+	RS_LO;	// Switch back to data register
 }
 
 
 void display(char* str) {
 
-	if (strcmp(displayStr,str)) {	// change to new string. strcmp true if not equal
+	// Change to new string. strcmp evaluates to true if not equal
+	if (strcmp(displayStr,str)) {
 		strcpy(displayStr, str);
 		displayIndex = 0;
 	}
 
 	char const *ptr;	// to keep track of start of str
-	RS_0;			// Select control register
-	CE_0;			// Enable data writing
+	RS_LO;			// Select control register
+	CE_LO;			// Enable data writing
 
 	// Static Display
 	int32_t i;
@@ -51,11 +52,11 @@ void display(char* str) {
 		}
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) == SET);
-	CE_1;	//latch on
+	CE_HI;	//latch on
 	}
 
 
-	// Scrolling display
+	// Scroll display repeatedly
 	if (displayStr[displayIndex+3] == '\0') {
 		displayIndex = 0;
 		return;
@@ -72,7 +73,7 @@ void display(char* str) {
 	}
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) == SET);
-	CE_1;	//latch on
+	CE_HI;	//latch on
 
 	displayIndex++;
 

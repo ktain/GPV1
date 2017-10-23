@@ -55,6 +55,4 @@ void setSteeringPwm(int32_t pwm);
 float mm_to_counts(float mm);
 float counts_to_mm(float counts);
 
-float getSensorError(void);
-
 #endif

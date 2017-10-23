@@ -528,7 +528,7 @@ static void display_setup()
 	SPI_Cmd(SPI2, ENABLE);
 	SPI_NSSInternalSoftwareConfig(SPI2, ENABLE);
 
-	CE_1;
+	CE_HI;
 	
 	setDisplayBrightness(displayBrightness);
 	clearDisplay();
