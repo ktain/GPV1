@@ -18,8 +18,8 @@ void systick(void)
 		updateSpeed();
 		speedControl();
 	}
-	updateServo2();
-	updateServo3();	// steering
+
+	updateSteeringAngle();
 	
 	updateDisplay();
 	
@@ -51,7 +51,7 @@ void button0(void)
 	delay_ms(500);
 	
 	SERVO_ON;
-	setServo1Pwm(servo1CenterPwm); 
+	setCamera1Pwm(camera1Pwm); 
 	delay_ms(500);
 
 	MTR_ON;

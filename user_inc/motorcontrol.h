@@ -1,27 +1,17 @@
 #if !defined(MOTORCONTROL_H)
 #define MOTORCONTROL_H
 
-extern int32_t servo1CenterPwm;
-extern int32_t servo2CenterPwm;
-extern int32_t servo3CenterPwm;
-extern int32_t servo1MinPwm;
-extern int32_t servo1MaxPwm;
-extern int32_t servo2MinPwm;
-extern int32_t servo2MaxPwm;
-extern int32_t servo3MinPwm;
-extern int32_t servo3MaxPwm;
+extern volatile float steeringPwm;
+extern volatile int32_t steeringCenterPwm;
+extern volatile int32_t steeringMinPwm;
+extern volatile int32_t steeringMaxPwm;
 
-extern float pan_Kp;
-extern float pan_Kd;
 extern float steering_Kp;
 extern float steering_Kd;
 
-extern volatile float servo2Pwm;
-extern volatile float servo2Error;
-extern volatile float prevServo2Error;
-extern volatile float servo3Pwm;
-extern volatile float servo3Error;
-extern volatile float prevServo3Error;
+extern volatile float steeringPwm;
+extern volatile float steeringError;
+extern volatile float prevSteeringError;
 
 extern float counts_per_mm;
 
@@ -49,8 +39,7 @@ extern volatile float motorMaxPwm;
 extern volatile float kpX;
 extern volatile float kdX;
 
-void updateServo2(void);
-void updateServo3(void);
+void updateSteeringAngle(void);
 void updateSpeed(void);
 void speedControl(void);
 void setPwm(int32_t pwm);
@@ -59,9 +48,9 @@ void resetMotorParameters(void);
 void enableSpeedControl(void);
 void disableSpeedControl(void);
 
-void setServo1Pwm(int32_t pwm);
-void setServo2Pwm(int32_t pwm);
-void setServo3Pwm(int32_t pwm);
+void setCamera1Pwm(int32_t pwm);
+void setCamera2Pwm(int32_t pwm);
+void setSteeringPwm(int32_t pwm);
 
 float mm_to_counts(float mm);
 float counts_to_mm(float counts);

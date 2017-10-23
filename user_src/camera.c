@@ -12,6 +12,13 @@ volatile int32_t integrationTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile bool isIntegrating = 0;
 
+int32_t camera1Pwm;
+int32_t camera2Pwm;
+int32_t camera1MinPwm;
+int32_t camera1MaxPwm;
+int32_t camera2MinPwm;
+int32_t camera2MaxPwm;
+
 /*
  * readCameraStart() - Start the camera read routine
  */
@@ -92,4 +99,26 @@ void scanLine(void) {
 	}
 	
 	lineIndex = maxIndex;
+}
+
+// Set camera1 tilt servo on-time in microseconds
+void setCamera1Pwm(int32_t pwm)
+{
+	if (pwm > camera1MaxPwm)
+		pwm = camera1MaxPwm;
+	else if (pwm < camera1MinPwm)
+		pwm = camera1MinPwm;
+	
+	SERVO1_PWM = pwm;
+}
+
+// Set camera2 tilt servo on-time in microseconds 
+void setCamera2Pwm(int32_t pwm)
+{
+	if (pwm > camera2MaxPwm)
+		pwm = camera2MaxPwm;
+	else if (pwm < camera2MinPwm)
+		pwm = camera2MinPwm;
+	
+	SERVO2_PWM = pwm;
 }

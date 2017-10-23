@@ -6,27 +6,15 @@
 #include "encoder.h"
 #include "camera.h"
 
-int32_t servo1CenterPwm;
-int32_t servo2CenterPwm;
-int32_t servo3CenterPwm;
-int32_t servo1MinPwm;
-int32_t servo1MaxPwm;
-int32_t servo2MinPwm;
-int32_t servo2MaxPwm;
-int32_t servo3MinPwm;
-int32_t servo3MaxPwm;
-
-float pan_Kp;
-float pan_Kd;
 float steering_Kp;
 float steering_Kd;
 
-volatile float servo2Pwm;
-volatile float servo2Error;
-volatile float prevServo2Error;
-volatile float servo3Pwm;
-volatile float servo3Error;
-volatile float prevServo3Error;
+volatile float steeringPwm;
+volatile int32_t steeringCenterPwm;
+volatile int32_t steeringMinPwm;
+volatile int32_t steeringMaxPwm;
+volatile float steeringError;
+volatile float prevSteeringError;
 
 float counts_per_mm;
 
@@ -85,59 +73,12 @@ void speedControl(void)
 	setPwm(motorPwm);
 }
 
-void updateServo2(void)
-{
-	static int32_t pwmIndex = 0;
-	static int32_t numOccupied = 1;
-	static float servo2PwmArray[SERVO2_PWM_ARRAY_SIZE] = {0};
-	
-	servo2Error = 64 - lineIndex;
-	servo2PwmArray[pwmIndex] = servo2CenterPwm + pan_Kp*servo2Error + pan_Kd*(servo2Error - prevServo2Error);
-	prevServo2Error = servo2Error;
-	
-	// Average pwm array
-	servo2Pwm = 0;
-	for (int32_t i = 0; i < numOccupied; i++) {
-		servo2Pwm += servo2PwmArray[i];
-	}
-	servo2Pwm /= numOccupied;
-	
-	setServo2Pwm(servo2Pwm);
-	
-	if (numOccupied < SERVO2_PWM_ARRAY_SIZE)
-		numOccupied++;
-	
-	pwmIndex++;
-	if (pwmIndex == SERVO2_PWM_ARRAY_SIZE)
-		pwmIndex = 0;
-}
 
-void updateServo3(void)
+void updateSteeringAngle(void)
 {
-	static int32_t pwmIndex = 0;
-	static int32_t numOccupied = 1;
-	static float servo3PwmArray[SERVO3_PWM_ARRAY_SIZE] = {0};
-	float prevServo3Pwm = servo3Pwm;
-	
-	servo3Error = (servo2CenterPwm - servo2Pwm) + (lineIndex - 64);
-	servo3PwmArray[pwmIndex] = servo3CenterPwm + steering_Kp*servo3Error - steering_Kd*(servo3Error - prevServo3Error);
-	prevServo3Error = servo3Error;
-	
-	// Average pwm array
-	servo3Pwm = 0;
-	for (int32_t i = 0; i < numOccupied; i++) {
-		servo3Pwm += servo3PwmArray[i];
-	}
-	servo3Pwm /= numOccupied;
-	
-	setServo3Pwm(servo3Pwm);
-	
-	if (numOccupied < SERVO3_PWM_ARRAY_SIZE)
-		numOccupied++;
-	
-	pwmIndex++;
-	if (pwmIndex == SERVO3_PWM_ARRAY_SIZE)
-		pwmIndex = 0;
+	steeringError = (lineIndex - 63.5);
+	steeringPwm = steeringCenterPwm + steeringError;
+	setSteeringPwm(steeringPwm);
 }
 
 void enableSpeedControl(void) {
@@ -178,35 +119,13 @@ void setPwm(int32_t pwm)
 	MTR_PWM = pwm;
 }
 
-// Set servo1 on-time in microseconds
-void setServo1Pwm(int32_t pwm)
+// Set steering servo on-time in microseconds
+void setSteeringPwm(int32_t pwm)
 {
-	if (pwm > servo1MaxPwm)
-		pwm = servo1MaxPwm;
-	else if (pwm < servo1MinPwm)
-		pwm = servo1MinPwm;
-	
-	SERVO1_PWM = pwm;
-}
-
-// Set servo2 on-time in microseconds 
-void setServo2Pwm(int32_t pwm)
-{
-	if (pwm > servo2MaxPwm)
-		pwm = servo2MaxPwm;
-	else if (pwm < servo2MinPwm)
-		pwm = servo2MinPwm;
-	
-	SERVO2_PWM = pwm;
-}
-
-// Set servo3 on-time in microseconds
-void setServo3Pwm(int32_t pwm)
-{
-	if (pwm > servo3MaxPwm)
-		pwm = servo3MaxPwm;
-	else if (pwm < servo3MinPwm)
-		pwm = servo3MinPwm;
+	if (pwm > steeringMaxPwm)
+		pwm = steeringMaxPwm;
+	else if (pwm < steeringMinPwm)
+		pwm = steeringMinPwm;
 	
 	SERVO3_PWM = pwm;
 }

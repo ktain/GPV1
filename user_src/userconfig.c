@@ -19,23 +19,21 @@ void loadSettings(void) {
 	
 	integrationTime_us = 20000;	// integration time in us < interval
 	
-	// Camera tilt settings
-	servo1CenterPwm = 2250;		// Lower == see further 1650
-	servo1MinPwm = 1500;
-	servo1MaxPwm = 2250;
+	// Camera1 tilt settings
+	camera1Pwm = 2250;		// Lower == see further 1650
+	camera1MinPwm = 1500;
+	camera1MaxPwm = 2250;
 	
-	// Camera pan settings
-	servo2CenterPwm = 1420;		// Lower == move right
-	servo2MinPwm = 1420;	//920
-	servo2MaxPwm = 1420;	//1920
-	pan_Kp = 0.0;
-	pan_Kd = 0.0;
+	// Camera2 tilt settings
+	camera2Pwm = 1420;		// Lower == move right
+	camera2MinPwm = 1420;	//920
+	camera2MaxPwm = 1420;	//1920
 	
 	// Steering settings
-	servo3CenterPwm = 1460;		// Lower == move left
-	servo3MinPwm = 1140;
-	servo3MaxPwm = 1760;
-	steering_Kp = 10.0;
+	steeringCenterPwm = 1460;	// Lower == move left more
+	steeringMinPwm = 1140;
+	steeringMaxPwm = 1760;
+	steering_Kp = 1.0;
 	steering_Kd = 0.0;
 	
 	// Display settings

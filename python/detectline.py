@@ -85,14 +85,11 @@ try:
                 
             # Update line position
             max_index = get_max_index(array128)
-            if max_index > line_pos:
-                line_pos = line_pos + 1
-            elif max_index < line_pos:
-                line_pos = line_pos - 1
+            line_pos = line_pos + 0.5*(max_index-line_pos)
 
             # Plot
             plt.plot(array128, linewidth=2)
-            plt.ylim(0, 500)
+            plt.ylim(0, 1000)
             plt.xlim(0, 127)
             
             # Plot threshold
