@@ -23,12 +23,13 @@ void systick(void)
 	
 	updateDisplay();
 	
-	// display pwm
+	// display 
 	static int i = 0;
 	if (i < 100)
 		i++;
 	else {
-		displayInt(motorPwm);
+		displayVoltage();
+		//displayInt(motorPwm);
 		i = 0;
 	}
 	
@@ -49,7 +50,7 @@ void button0(void)
 {
 	delay_ms(500);
 	
-	//SERVO_ON;
+	SERVO_ON;
 	setServo1Pwm(servo1CenterPwm); 
 	delay_ms(500);
 
@@ -81,7 +82,7 @@ void button0(void)
 			scanBufShot[i] = scanBuf[i];
 		
 		for (int32_t i = 0; i < 128; i++) {
-			printf("%d %d\n", i+1, scanBufShot[i]);
+			printf("%d %d\n", i, scanBufShot[i]);
 		}
 		delay_ms(20);
 	}
@@ -104,7 +105,7 @@ void button0(void)
 		printf("%-9d|", i*100);
 	printf("%-9d|", i*100);
 	printf("\r\n");
-	
+	*/
 	
 	/*
 	printf("\r\n\n");
@@ -132,7 +133,6 @@ void button1(void)
 	SERVO_OFF;
 	setSpeedX(0);
 	disableSpeedControl();
-	//setPwm(0);
 }
 
 int main(void)
@@ -145,6 +145,17 @@ int main(void)
 	
 	
 	while(1) {
+		// Send camera values
+		int32_t scanBufShot[128];
+		int32_t i;
+		for (i = 0; i < 128; i++)
+			scanBufShot[i] = scanBuf[i];
+		
+		for (int32_t i = 0; i < 128; i++) {
+			printf("%d %d\n", i, scanBufShot[i]);
+		}
+		delay_ms(40);
+		
 		//printf("volt %5d|IS %d|AO1 %4d|Out1 %4d|AO2 %4d|Out2 %4d|enc %6d\n\r", read_Voltage, read_Current, read_AO1, read_Out1, read_AO2, read_Out2, getEncCount());
 	}
 }

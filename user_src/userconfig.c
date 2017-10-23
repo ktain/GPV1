@@ -13,17 +13,16 @@ void loadSettings(void) {
 	counts_per_mm = 68.9;
 	kpX = 0.3;
 	kdX = 0.5;
-	targetAccX = 10.0;
-	targetDecX = 10.0;
+	targetAccX = 5.0;
+	targetDecX = 5.0;
 	motorMaxPwm = 500;
 	
-	integrationInterval_us = 20000;	// integration interval
 	integrationTime_us = 20000;	// integration time in us < interval
 	
 	// Camera tilt settings
-	servo1CenterPwm = 2100;		// Lower == see further 1650
+	servo1CenterPwm = 2250;		// Lower == see further 1650
 	servo1MinPwm = 1500;
-	servo1MaxPwm = 2100;
+	servo1MaxPwm = 2250;
 	
 	// Camera pan settings
 	servo2CenterPwm = 1420;		// Lower == move right
@@ -41,6 +40,6 @@ void loadSettings(void) {
 	
 	// Display settings
 	displayDelay_ms = 200;
-	displayBrightness = 4;	//0-15
+	displayBrightness = 10;	//0-15
 }
 

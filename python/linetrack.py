@@ -27,7 +27,7 @@ try:
             plt.plot(array128)
             plt.ylim(0, 4000)
             plt.xlim(1, 128)
-            plt.pause(0.000001)  # pause in seconds
+            plt.pause(0.020)  # pause in seconds
         
 except:
     # close the serial port

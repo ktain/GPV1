@@ -9,7 +9,6 @@
 volatile int32_t scanBuf[128];
 volatile float lineIndex = 0;
 volatile int32_t integrationTime_us = 0;
-volatile int32_t integrationInterval_us = 0;
 volatile int32_t startTime_us = 0;
 volatile bool isIntegrating = 0;
 
@@ -18,8 +17,6 @@ volatile bool isIntegrating = 0;
  */
 void readCameraStart(void)
 {
-	startTime_us = micros();
-	isIntegrating = 1;
 	scanLine();
 	
 	// Flush garbage values
@@ -68,12 +65,14 @@ void readCameraStop(void)
  */
 void readCamera(void)
 {
-	if (!isIntegrating)
+	int32_t elapsedTime_us = micros() - startTime_us;
+	if (!isIntegrating) {
+		startTime_us = micros();
+		isIntegrating = 1;
 		readCameraStart();
-	if (micros() - startTime_us >= integrationTime_us) {
-		readCameraStop();
 	}
-	if (micros() - startTime_us >= integrationInterval_us) {
+	else if (elapsedTime_us >= integrationTime_us) {
+		readCameraStop();
 		isIntegrating = 0;
 	}
 }

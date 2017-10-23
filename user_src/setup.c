@@ -249,7 +249,7 @@ static void adc_setup(void)
  */
 uint32_t readADC(uint32_t channel)
 {
-	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_3Cycles);
+	ADC_RegularChannelConfig(ADC1, channel, 1, ADC_SampleTime_15Cycles);
 	ADC_SoftwareStartConv(ADC1);
 	while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
 	return ADC_GetConversionValue(ADC1);
@@ -460,7 +460,7 @@ void timer_setup()
 	//PWM frequency = 84000000 / (period + 1) / (prescaler + 1)
 	
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (integrationInterval_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
+	TIM_TimeBaseStructure.TIM_Period = (integrationTime_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
 	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
