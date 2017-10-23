@@ -7,7 +7,7 @@
 #include "camera.h"
 
 volatile int32_t scanBuf[128];
-volatile float lineIndex = 0;
+volatile float linePos = 0;
 volatile int32_t integrationTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile bool isIntegrating = 0;
@@ -98,7 +98,7 @@ void scanLine(void) {
 		}
 	}
 	
-	lineIndex = maxIndex;
+	linePos = maxIndex;
 }
 
 // Set nearCam tilt servo on-time in microseconds

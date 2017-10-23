@@ -8,7 +8,7 @@ void readCamera(void);
 void scanLine(void);
 
 extern volatile int32_t scanBuf[128];
-extern volatile float lineIndex;
+extern volatile float linePos;
 extern volatile int32_t integrationTime_us;
 
 extern int32_t nearCamPwm;
