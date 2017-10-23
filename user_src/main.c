@@ -61,7 +61,7 @@ void button0(void)
 	
 	/*
 	while(1) {
-		int32_t temp = lineIndex;
+		int32_t temp = linePos;
 		printf("|");
 		for (int32_t i = 0; i < 128; i++) {
 			if (i == temp)
@@ -145,6 +145,7 @@ int main(void)
 	
 	
 	while(1) {
+
 		// Send camera values
 		int32_t scanBufShot[128];
 		int32_t i;

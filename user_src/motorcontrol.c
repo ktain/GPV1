@@ -76,7 +76,15 @@ void speedControl(void)
 
 void updateSteeringAngle(void)
 {
-	steeringError = (lineIndex - 63.5);
+	// steeringError from -1.0 to 1.0
+	steeringError = (linePos - 63.5)/63.5;
+	
+	// steering error converted to pwm
+	if (steeringError < 0)
+		steeringError = steeringError * (steeringCenterPwm - steeringMinPwm);
+	else 
+		steeringError = steeringError * (steeringMaxPwm - steeringCenterPwm);
+	
 	steeringPwm = steeringCenterPwm + steeringError;
 	setSteeringPwm(steeringPwm);
 }

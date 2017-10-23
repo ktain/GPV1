@@ -23,9 +23,7 @@ int32_t farCamMaxPwm;
  * readCameraStart() - Start the camera read routine
  */
 void readCameraStart(void)
-{
-	scanLine();
-	
+{	
 	// Flush garbage values
 	SI_HI;
 	CLK_HI;
@@ -80,15 +78,19 @@ void readCamera(void)
 	}
 	else if (elapsedTime_us >= integrationTime_us) {
 		readCameraStop();
+		detectLinePos();
 		isIntegrating = 0;
 	}
 }
 
 /*
- * scanLine() - Detect and update line position 
+ * detectLinePos() - Detect and update line position 
  */
-void scanLine(void) {
-	// Scan for line
+void detectLinePos(void) {
+	// Spatial moving average filter
+	moving_avg_filter(scanBuf, 128);
+	
+	// Detect line position
 	int32_t maxIndex = 0;
 	int32_t maxVal = 0;
 	for (int32_t i = 0; i < 128; i++) {
@@ -122,3 +124,15 @@ void setFarCamPwm(int32_t pwm)
 	
 	SERVO2_PWM = pwm;
 }
+
+// spatial moving average filter
+void moving_avg_filter (volatile int32_t *arr, int32_t size) {
+	int32_t i;
+	// perform spatial moving average filter
+	for (i = 1; i < size-1; i++) {
+		arr[i] = (arr[i-1] + arr[i] + arr[i+1])/3;
+	}
+	arr[0] = arr[1];
+	arr[size-1] = arr[size-2];
+}
+
