@@ -94,7 +94,7 @@ try:
             
             # Mean filter
             array128 = mean_filter(array128)
-                
+
             # Calculate threshold
             threshold = min(array128) + 0.3*(max(array128) - min(array128))
             
@@ -106,7 +106,7 @@ try:
 
             # Plot
             plt.plot(array128, linewidth=2, ls='steps')
-            plt.ylim(0, 1000)
+            plt.ylim(0, 3000)
             plt.xlim(0, 127)
             plt.grid(True)
             

@@ -410,7 +410,7 @@ static void encoder_setup(void)
 }
 
 /* 
- * camera_setup() - Setup line scan camera and integration time
+ * camera_setup() - Setup line scan camera
  */
 static void camera_setup(void) 
 {
@@ -460,7 +460,7 @@ void timer_setup()
 	//PWM frequency = 84000000 / (period + 1) / (prescaler + 1)
 	
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (integrationTime_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
+	TIM_TimeBaseStructure.TIM_Period = (exposureTime_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
 	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;

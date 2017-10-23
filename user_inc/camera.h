@@ -4,13 +4,13 @@
 void readCameraStart(void);
 void readCameraStop(void);
 void readCamera(void);
-
+void updateExposureTime(void);
 void detectLinePos(void);
 void movingAvgFilter(volatile int32_t *arr, int32_t size);
 
 extern volatile int32_t scanBuf[128];
 extern volatile float linePos;
-extern volatile int32_t integrationTime_us;
+extern volatile int32_t exposureTime_us;
 
 extern int32_t nearCamPwm;
 extern int32_t farCamPwm;

@@ -17,7 +17,7 @@ void loadSettings(void) {
 	targetDecX = 5.0;
 	motorMaxPwm = 500;
 	
-	integrationTime_us = 20000;	// integration time in us < interval
+	exposureTime_us = 20000;	// exposure time in us < interval
 	
 	// NearCam tilt settings
 	nearCamPwm = 2250;		// Lower == see further 1650

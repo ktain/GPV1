@@ -21,14 +21,16 @@ void systick(void)
 
 	updateSteeringAngle();
 	updateDisplay();
+	updateExposureTime();
 	
 	// display 
 	static int i = 0;
 	if (i < 100)
 		i++;
 	else {
-		displayVoltage();
+		//displayVoltage();
 		//displayInt(motorPwm);
+		displayInt(exposureTime_us/1000);
 		i = 0;
 	}
 	

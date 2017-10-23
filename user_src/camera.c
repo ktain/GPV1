@@ -7,7 +7,7 @@
 
 volatile int32_t scanBuf[128];
 volatile float linePos = 0;
-volatile int32_t integrationTime_us = 0;
+volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile _Bool isIntegrating = 0;
 
@@ -74,11 +74,31 @@ void readCamera(void)
 		isIntegrating = 1;
 		readCameraStart();
 	}
-	else if (elapsedTime_us >= integrationTime_us) {
+	else if (elapsedTime_us >= exposureTime_us) {
 		readCameraStop();
 		detectLinePos();
 		isIntegrating = 0;
 	}
+}
+
+// Automatic exposure time adjustment
+void updateExposureTime(void)
+{	
+	// Adaptive exposure time
+	int32_t maxVal = 0;
+	for (int i = 0; i < 128; i++) {
+		if (scanBuf[i] > maxVal)
+			maxVal = scanBuf[i];
+	}
+	if (maxVal > 3000)
+		exposureTime_us -= 100;
+	else 
+		exposureTime_us += 100;
+	
+	if (exposureTime_us > 20000)
+		exposureTime_us = 20000;
+	else if (exposureTime_us < 1000)
+		exposureTime_us = 1000;
 }
 
 /*
