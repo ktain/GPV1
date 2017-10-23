@@ -10,6 +10,5 @@ void scanLine(void);
 extern volatile int32_t scanBuf[128];
 extern volatile float lineIndex;
 extern volatile int32_t integrationTime_us;
-extern volatile int32_t integrationInterval_us;
 
 #endif

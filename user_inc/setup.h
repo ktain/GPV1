@@ -3,7 +3,7 @@
 
 #define TICKS_PER_MS (168000)
 #define TICKS_PER_US (168)
-#define BAUDRATE (115200)	// Serial data rate (921600)
+#define BAUDRATE (921600)	// Serial data rate (921600)
 
 /* LED MACRO Control */
 #define LED1_ON		GPIO_SetBits(GPIOA, GPIO_Pin_4)
@@ -18,7 +18,7 @@
 #define ALL_LED_OFF	LED1_OFF; LED2_OFF; LED3_OFF; LED4_OFF
 
 /* ADC Pinout */
-#define read_Voltage	((int32_t)(readADC(10)*3.36))	// 11000 == 11V
+#define read_Voltage	((int32_t)(readADC(10)*3.22))	// 11000 == 11V
 #define read_Current	readADC(12)
 #define read_AO1	readADC(14)
 #define read_Out1	readADC(15)
