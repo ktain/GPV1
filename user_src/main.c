@@ -51,7 +51,7 @@ void button0(void)
 	delay_ms(500);
 	
 	SERVO_ON;
-	setCamera1Pwm(camera1Pwm); 
+	setNearCamPwm(nearCamPwm); 
 	delay_ms(500);
 
 	MTR_ON;

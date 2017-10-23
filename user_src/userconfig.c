@@ -19,15 +19,15 @@ void loadSettings(void) {
 	
 	integrationTime_us = 20000;	// integration time in us < interval
 	
-	// Camera1 tilt settings
-	camera1Pwm = 2250;		// Lower == see further 1650
-	camera1MinPwm = 1500;
-	camera1MaxPwm = 2250;
+	// NearCam tilt settings
+	nearCamPwm = 2250;		// Lower == see further 1650
+	nearCamMinPwm = 1500;
+	nearCamMaxPwm = 2250;
 	
-	// Camera2 tilt settings
-	camera2Pwm = 1420;		// Lower == move right
-	camera2MinPwm = 1420;	//920
-	camera2MaxPwm = 1420;	//1920
+	// FarCam tilt settings
+	farCamPwm = 1420;		// Lower == move right
+	farCamMinPwm = 1420;	//920
+	farCamMaxPwm = 1420;	//1920
 	
 	// Steering settings
 	steeringCenterPwm = 1460;	// Lower == move left more

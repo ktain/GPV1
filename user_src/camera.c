@@ -12,12 +12,12 @@ volatile int32_t integrationTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile bool isIntegrating = 0;
 
-int32_t camera1Pwm;
-int32_t camera2Pwm;
-int32_t camera1MinPwm;
-int32_t camera1MaxPwm;
-int32_t camera2MinPwm;
-int32_t camera2MaxPwm;
+int32_t nearCamPwm;
+int32_t farCamPwm;
+int32_t nearCamMinPwm;
+int32_t nearCamMaxPwm;
+int32_t farCamMinPwm;
+int32_t farCamMaxPwm;
 
 /*
  * readCameraStart() - Start the camera read routine
@@ -101,24 +101,24 @@ void scanLine(void) {
 	lineIndex = maxIndex;
 }
 
-// Set camera1 tilt servo on-time in microseconds
-void setCamera1Pwm(int32_t pwm)
+// Set nearCam tilt servo on-time in microseconds
+void setNearCamPwm(int32_t pwm)
 {
-	if (pwm > camera1MaxPwm)
-		pwm = camera1MaxPwm;
-	else if (pwm < camera1MinPwm)
-		pwm = camera1MinPwm;
+	if (pwm > nearCamMaxPwm)
+		pwm = nearCamMaxPwm;
+	else if (pwm < nearCamMinPwm)
+		pwm = nearCamMinPwm;
 	
 	SERVO1_PWM = pwm;
 }
 
-// Set camera2 tilt servo on-time in microseconds 
-void setCamera2Pwm(int32_t pwm)
+// Set farCam tilt servo on-time in microseconds 
+void setFarCamPwm(int32_t pwm)
 {
-	if (pwm > camera2MaxPwm)
-		pwm = camera2MaxPwm;
-	else if (pwm < camera2MinPwm)
-		pwm = camera2MinPwm;
+	if (pwm > farCamMaxPwm)
+		pwm = farCamMaxPwm;
+	else if (pwm < farCamMinPwm)
+		pwm = farCamMinPwm;
 	
 	SERVO2_PWM = pwm;
 }

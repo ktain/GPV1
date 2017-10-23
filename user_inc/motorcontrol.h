@@ -48,8 +48,8 @@ void resetMotorParameters(void);
 void enableSpeedControl(void);
 void disableSpeedControl(void);
 
-void setCamera1Pwm(int32_t pwm);
-void setCamera2Pwm(int32_t pwm);
+void setNearCamPwm(int32_t pwm);
+void setFarCamPwm(int32_t pwm);
 void setSteeringPwm(int32_t pwm);
 
 float mm_to_counts(float mm);
