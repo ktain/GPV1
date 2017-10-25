@@ -68,8 +68,9 @@ def get_nearest_peak(arr, threshold):
     return line_pos
         
 
-# open the COM5 port at 921600 baud
-ser = serial.Serial('COM5', 921600)
+# open the COM5 port at 921600 baud (Nucleo)
+# open the COM4 port at 9600 (HC-05)
+ser = serial.Serial('COM4', 9600)
 count = 0;
 line_pos = 63.5
 
@@ -87,7 +88,7 @@ try:
             count = count + 1;
             
         # Refresh plot
-        if count >= 128:
+        if count >= 32:
             
             # Median filter
             # array128 = median_filter(array128)
@@ -123,7 +124,7 @@ try:
             plt.axvline(x=nearest_peak, linewidth=15, alpha=0.5, color='brown')
             
             
-            plt.pause(0.040)  # pause in seconds
+            plt.pause(0.010)  # pause in seconds
             count = 0
         
 except:

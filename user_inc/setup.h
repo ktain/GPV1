@@ -3,7 +3,7 @@
 
 #define TICKS_PER_MS (168000)
 #define TICKS_PER_US (168)
-#define BAUDRATE (921600)	// Serial data rate (921600)
+#define BAUDRATE (9600)	// Serial data rate (921600)
 
 /* LED MACRO Control */
 #define LED1_ON		GPIO_SetBits(GPIOA, GPIO_Pin_4)
