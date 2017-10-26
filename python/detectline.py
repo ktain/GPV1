@@ -42,14 +42,13 @@ def get_max_index(arr):
             max_val = arr[i]
     return max_index
 
-def get_nearest_peak(arr, threshold):
+def get_nearest_peak(arr, threshold, old_pos):
     min_width = 5
-    
+    max_width = 30
     lhs = 0
     rhs = 0
     line_pos = 0
-    center = len(arr)/2
-    min_dist_from_center = int(len(arr))/2 - 1
+    min_dist_from_old_pos = int(len(arr))/2 - 1
     peak_count = 0
     
     for i in range(int(len(arr))):
@@ -60,9 +59,9 @@ def get_nearest_peak(arr, threshold):
                     rhs = i
                     peak_count = peak_count + 1
                     break
-            if (rhs - lhs >= min_width) and abs(lhs + (rhs - lhs)/2.0 - center) < abs(min_dist_from_center):
+            if (rhs - lhs >= min_width) and (rhs - lhs <= max_width) and abs(lhs + (rhs - lhs)/2.0 - old_pos) < abs(min_dist_from_old_pos):
                 line_pos = lhs + (rhs - lhs)/2.0
-                min_dist_from_center = abs(lhs + (rhs - lhs)/2.0 - center)
+                min_dist_from_old_pos = abs(lhs + (rhs - lhs)/2.0 - old_pos)
             
     print '%d peaks detected'%(peak_count)
     return line_pos
@@ -70,9 +69,9 @@ def get_nearest_peak(arr, threshold):
 
 # open the COM5 port at 921600 baud (Nucleo)
 # open the COM4 port at 9600 (HC-05)
-ser = serial.Serial('COM4', 9600)
-count = 0;
-line_pos = 63.5
+ser = serial.Serial('COM5', 9600)
+count = 0
+nearest_peak = 63.5
 
 # preallocate array
 array128 = np.zeros(128)
@@ -103,8 +102,9 @@ try:
             max_index = get_max_index(array128)
             
             # Detect nearest peak
-            nearest_peak = get_nearest_peak(array128, threshold)
-
+            old_pos = nearest_peak
+            nearest_peak = get_nearest_peak(array128, threshold, old_pos)
+            
             # Plot
             plt.plot(array128, linewidth=2, ls='steps')
             plt.ylim(0, 3000)
