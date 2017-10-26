@@ -58,7 +58,7 @@ void button0(void)
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.5);
+	setSpeedX(0.3);
 	
 	/*
 	while(1) {

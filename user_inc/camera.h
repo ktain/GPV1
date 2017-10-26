@@ -7,6 +7,7 @@ void readCamera(void);
 void updateExposureTime(void);
 void detectLinePos(void);
 void movingAvgFilter(volatile int32_t *arr, int32_t size);
+int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, int32_t old_pos);
 
 extern volatile int32_t scanBuf[128];
 extern volatile float linePos;

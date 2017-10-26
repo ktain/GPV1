@@ -1,9 +1,12 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_it.h"
 
+#include <stdlib.h>
+
 #include "setup.h"
 #include "delay.h"
 #include "camera.h"
+#include "display.h"
 
 volatile int32_t scanBuf[128];
 volatile float linePos = 0;
@@ -105,9 +108,29 @@ void updateExposureTime(void)
  * detectLinePos() - Detect and update line position 
  */
 void detectLinePos(void) {
-	// Spatial moving average filter
-	movingAvgFilter(scanBuf, 128);
+	static int32_t old_pos = 63;
+	int32_t threshold;
 	
+	// Spatial moving average filter
+	//movingAvgFilter(scanBuf, 128);
+	
+	// Calculate threshold
+	int32_t maxVal = scanBuf[0];
+	int32_t minVal = scanBuf[0];
+	for (int32_t i = 0; i < 128; i++) {
+		if (scanBuf[i] > maxVal) {
+			maxVal = scanBuf[i];
+		}
+		if (scanBuf[i] < minVal) {
+			minVal = scanBuf[i];
+		}
+	}
+	threshold = 0.3*(maxVal - minVal) + minVal;
+	
+	linePos = getNearestPeak(scanBuf, 128, threshold, old_pos);
+	old_pos = linePos;
+	
+	/*
 	// Detect line position
 	int32_t maxIndex = 0;
 	int32_t maxVal = 0;
@@ -119,6 +142,7 @@ void detectLinePos(void) {
 	}
 	
 	linePos = maxIndex;
+	*/
 }
 
 // Set nearCam tilt servo on-time in microseconds
@@ -144,7 +168,7 @@ void setFarCamPwm(int32_t pwm)
 }
 
 // Spatial moving average filter
-void movingAvgFilter (volatile int32_t *arr, int32_t size) {
+void movingAvgFilter(volatile int32_t *arr, int32_t size) {
 	int32_t i;
 	
 	// perform spatial moving average filter
@@ -153,5 +177,35 @@ void movingAvgFilter (volatile int32_t *arr, int32_t size) {
 	}
 	arr[0] = arr[1];
 	arr[size-1] = arr[size-2];
+}
+
+// Get nearest peak
+int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, int32_t old_pos) {
+	static int32_t line_pos = 63;
+	int32_t min_width = 5;
+	int32_t max_width = 40;
+	int32_t lhs = 0;
+	int32_t rhs = 0;
+	int32_t min_dist_from_old_pos = 127;
+	int32_t peak_count = 0;
+	
+	for (int32_t i = 0; i < 128; i++) {
+		if (arr[i] >= threshold && i > rhs) {
+			lhs = i;
+			for (int32_t j = lhs; j < 128; j++) {
+				if (arr[j] < threshold || j >= 127) {
+					rhs = j;
+					peak_count++;
+					break;
+				}
+			}
+		}
+		if ((rhs-lhs >= min_width) && (rhs-lhs <= max_width) && 
+		    (abs(lhs + (rhs-lhs)/2 - old_pos) < abs(min_dist_from_old_pos))) {
+			line_pos = lhs + (rhs-lhs)/2;
+			min_dist_from_old_pos = abs(lhs + (rhs-lhs)/2 - old_pos);
+		}
+	}
+	return line_pos;
 }
 
