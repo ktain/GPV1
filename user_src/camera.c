@@ -14,6 +14,9 @@ volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile _Bool isIntegrating = 0;
 
+int32_t min_line_width;
+int32_t max_line_width;
+
 int32_t nearCamOnTime;
 int32_t farCamOnTime;
 int32_t nearCamMinOnTime;
@@ -79,7 +82,7 @@ void readCamera(void)
 	}
 	else if (elapsedTime_us >= exposureTime_us) {
 		readCameraStop();
-		detectLinePos();
+		detectLinePos(scanBuf, 128, min_line_width, max_line_width);
 		isIntegrating = 0;
 	}
 }
@@ -105,38 +108,38 @@ void updateExposureTime(void)
 }
 
 /*
- * detectLinePos() - Detect and update line position 
+ * detectLinePos() - Detect and update line position given an array of pixel values
  */
-void detectLinePos(void) {
+void detectLinePos(volatile int32_t *arr, int32_t size, int32_t min_width, int32_t max_width) {
 	static int32_t old_pos = 63;
 	int32_t threshold;
 	
 	// Spatial moving average filter
-	movingAvgFilter(scanBuf, 128);
+	movingAvgFilter(arr, size);
 	
 	// Calculate threshold
-	int32_t maxVal = scanBuf[0];
-	int32_t minVal = scanBuf[0];
-	for (int32_t i = 0; i < 128; i++) {
-		if (scanBuf[i] > maxVal) {
-			maxVal = scanBuf[i];
+	int32_t maxVal = arr[0];
+	int32_t minVal = arr[0];
+	for (int32_t i = 0; i < size; i++) {
+		if (arr[i] > maxVal) {
+			maxVal = arr[i];
 		}
-		if (scanBuf[i] < minVal) {
-			minVal = scanBuf[i];
+		if (arr[i] < minVal) {
+			minVal = arr[i];
 		}
 	}
 	threshold = 0.5*(maxVal - minVal) + minVal;
 	
-	linePos = getNearestPeak(scanBuf, 128, threshold, old_pos);
+	linePos = getNearestPeak(arr, 128, threshold, old_pos, min_width, max_width);
 	old_pos = linePos;
 	
 	/*
 	// Detect line position
 	int32_t maxIndex = 0;
 	int32_t maxVal = 0;
-	for (int32_t i = 0; i < 128; i++) {
-		if (scanBuf[i] > maxVal) {
-			maxVal = scanBuf[i];
+	for (int32_t i = 0; i < size; i++) {
+		if (arr[i] > maxVal) {
+			maxVal = arr[i];
 			maxIndex = i;
 		}
 	}
@@ -179,10 +182,8 @@ void movingAvgFilter(volatile int32_t *arr, int32_t size) {
 }
 
 // Get nearest peak
-int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, float old_pos) {
+int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, float old_pos, int32_t min_width, int32_t max_width) {
 	float nearest_pos = old_pos;
-	int32_t min_width = 5;
-	int32_t max_width = 40;
 	int32_t lhs = 0;
 	int32_t rhs = 0;
 	int32_t min_dist_from_old_pos = 127;

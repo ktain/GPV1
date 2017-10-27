@@ -20,13 +20,16 @@ void loadSettings(void) {
 	
 	exposureTime_us = 20000;	// exposure time in us < interval (max 65536)
 	servo_period_us = 3000;		// servo period in us (max 65536)
+	min_line_width = 5;
+	max_line_width = 40;
+
 	
-	// NearCam tilt settings
+	// NearCam settings
 	nearCamOnTime = 2000;		// Lower == see further
 	nearCamMinOnTime = 1500;
 	nearCamMaxOnTime = 2250;
 	
-	// FarCam tilt settings
+	// FarCam settings
 	farCamOnTime = 1420;		// Lower == move right
 	farCamMinOnTime = 1420;	//920
 	farCamMaxOnTime = 1420;	//1920
