@@ -11,6 +11,7 @@
  */
 void loadSettings(void) {
 	
+	// Motor settings
 	counts_per_mm = 68.9;
 	kpX = 0.3;
 	kdX = 0.5;
@@ -18,7 +19,8 @@ void loadSettings(void) {
 	targetDecX = 5.0;
 	motorMaxPwm = 500;
 	
-	exposureTime_us = 20000;	// exposure time in us < interval (max 65536)
+	minExposureTime_us = 1000;
+	maxExposureTime_us = 10000;	// max exposure time in us (max 65536)
 	servo_period_us = 3000;		// servo period in us (max 65536)
 	min_line_width = 5;
 	max_line_width = 40;

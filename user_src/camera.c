@@ -14,6 +14,8 @@ volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile _Bool isIntegrating = 0;
 
+int32_t minExposureTime_us;
+int32_t maxExposureTime_us;
 int32_t min_line_width;
 int32_t max_line_width;
 
@@ -101,10 +103,10 @@ void updateExposureTime(void)
 	else 
 		exposureTime_us += 100;
 	
-	if (exposureTime_us > 20000)
-		exposureTime_us = 20000;
-	else if (exposureTime_us < 1000)
-		exposureTime_us = 1000;
+	if (exposureTime_us > maxExposureTime_us)
+		exposureTime_us = maxExposureTime_us;
+	else if (exposureTime_us < minExposureTime_us)
+		exposureTime_us = minExposureTime_us;
 }
 
 /*
