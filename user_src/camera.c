@@ -112,7 +112,7 @@ void detectLinePos(void) {
 	int32_t threshold;
 	
 	// Spatial moving average filter
-	//movingAvgFilter(scanBuf, 128);
+	movingAvgFilter(scanBuf, 128);
 	
 	// Calculate threshold
 	int32_t maxVal = scanBuf[0];
@@ -171,7 +171,6 @@ void setFarCamPwm(int32_t pwm)
 void movingAvgFilter(volatile int32_t *arr, int32_t size) {
 	int32_t i;
 	
-	// perform spatial moving average filter
 	for (i = 1; i < size-1; i++) {
 		arr[i] = (arr[i-1] + arr[i] + arr[i+1])/3;
 	}
@@ -181,7 +180,7 @@ void movingAvgFilter(volatile int32_t *arr, int32_t size) {
 
 // Get nearest peak
 int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, int32_t old_pos) {
-	static int32_t line_pos = 63;
+	int32_t nearest_pos = old_pos;
 	int32_t min_width = 5;
 	int32_t max_width = 40;
 	int32_t lhs = 0;
@@ -189,9 +188,11 @@ int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, i
 	int32_t min_dist_from_old_pos = 127;
 	int32_t peak_count = 0;
 	
+	// find LHS
 	for (int32_t i = 0; i < 128; i++) {
 		if (arr[i] >= threshold && i > rhs) {
 			lhs = i;
+			// find RHS
 			for (int32_t j = lhs; j < 128; j++) {
 				if (arr[j] < threshold || j >= 127) {
 					rhs = j;
@@ -199,13 +200,13 @@ int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, i
 					break;
 				}
 			}
-		}
-		if ((rhs-lhs >= min_width) && (rhs-lhs <= max_width) && 
-		    (abs(lhs + (rhs-lhs)/2 - old_pos) < abs(min_dist_from_old_pos))) {
-			line_pos = lhs + (rhs-lhs)/2;
-			min_dist_from_old_pos = abs(lhs + (rhs-lhs)/2 - old_pos);
+			if ((rhs-lhs >= min_width) && (rhs-lhs <= max_width) && 
+			    (abs(lhs + (rhs-lhs)/2 - old_pos) < abs(min_dist_from_old_pos))) {
+				nearest_pos = lhs + (rhs-lhs)/2;
+				min_dist_from_old_pos = abs(lhs + (rhs-lhs)/2 - old_pos);
+			}
 		}
 	}
-	return line_pos;
+	return nearest_pos;
 }
 
