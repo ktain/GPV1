@@ -9,10 +9,10 @@
 float steering_Kp;
 float steering_Kd;
 
-volatile float steeringPwm;
-volatile int32_t steeringCenterPwm;
-volatile int32_t steeringMinPwm;
-volatile int32_t steeringMaxPwm;
+volatile float steeringOnTime;
+volatile int32_t steeringCenterOnTime;
+volatile int32_t steeringMinOnTime;
+volatile int32_t steeringMaxOnTime;
 volatile float steeringError;
 volatile float prevSteeringError;
 
@@ -81,12 +81,12 @@ void updateSteeringAngle(void)
 	
 	// steering error converted to pwm
 	if (steeringError < 0)
-		steeringError = steeringError * (steeringCenterPwm - steeringMinPwm);
+		steeringError = steeringError * (steeringCenterOnTime - steeringMinOnTime);
 	else 
-		steeringError = steeringError * (steeringMaxPwm - steeringCenterPwm);
+		steeringError = steeringError * (steeringMaxOnTime - steeringCenterOnTime);
 	
-	steeringPwm = steeringCenterPwm + steeringError;
-	setSteeringPwm(steeringPwm);
+	steeringOnTime = steeringCenterOnTime + steeringError;
+	setSteeringOnTime(steeringOnTime);
 }
 
 void enableSpeedControl(void) {
@@ -128,14 +128,14 @@ void setPwm(int32_t pwm)
 }
 
 // Set steering servo on-time in microseconds
-void setSteeringPwm(int32_t pwm)
+void setSteeringOnTime(int32_t onTime_us)
 {
-	if (pwm > steeringMaxPwm)
-		pwm = steeringMaxPwm;
-	else if (pwm < steeringMinPwm)
-		pwm = steeringMinPwm;
+	if (onTime_us > steeringMaxOnTime)
+		onTime_us = steeringMaxOnTime;
+	else if (onTime_us < steeringMinOnTime)
+		onTime_us = steeringMinOnTime;
 	
-	STEERING_PWM = pwm;
+	STEERING_PWM = onTime_us;
 }
 
 // Set translational speed

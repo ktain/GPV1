@@ -52,8 +52,9 @@ void button0(void)
 	delay_ms(500);
 	
 	SERVO_ON;
-	setNearCamPwm(nearCamPwm); 
+	setNearCamOnTime(nearCamOnTime); 
 	delay_ms(500);
+	NEAR_CAM_PWM = 0;
 
 	MTR_ON;
 	
@@ -131,7 +132,8 @@ void button0(void)
 
 void button1(void)
 {
-	SERVO_OFF;
+	//SERVO_OFF;
+	STEERING_PWM = 0;
 	setSpeedX(0);
 	disableSpeedControl();
 }
@@ -146,7 +148,7 @@ int main(void)
 	
 	
 	while(1) {
-		/*
+		
 		// Send camera values
 		int32_t scanBufShot[128];
 		int32_t i;
@@ -157,8 +159,8 @@ int main(void)
 			printf("%d %d\n", i, scanBufShot[i]);
 		}
 		delay_ms(100);
-		*/
-		printf("%f\n\r", linePos);
+		
+		//printf("%f\n\r", linePos);
 		
 		//printf("volt %5d|IS %d|AO1 %4d|Out1 %4d|AO2 %4d|Out2 %4d|enc %6d\n\r", read_Voltage, read_Current, read_AO1, read_Out1, read_AO2, read_Out2, getEncCount());
 	}

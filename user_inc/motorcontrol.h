@@ -1,10 +1,10 @@
 #if !defined(MOTORCONTROL_H)
 #define MOTORCONTROL_H
 
-extern volatile float steeringPwm;
-extern volatile int32_t steeringCenterPwm;
-extern volatile int32_t steeringMinPwm;
-extern volatile int32_t steeringMaxPwm;
+extern volatile float steeringOnTime;
+extern volatile int32_t steeringCenterOnTime;
+extern volatile int32_t steeringMinOnTime;
+extern volatile int32_t steeringMaxOnTime;
 
 extern float steering_Kp;
 extern float steering_Kd;
@@ -48,10 +48,7 @@ void resetMotorParameters(void);
 void enableSpeedControl(void);
 void disableSpeedControl(void);
 
-void setNearCamPwm(int32_t pwm);
-void setFarCamPwm(int32_t pwm);
-void setSteeringPwm(int32_t pwm);
-
+void setSteeringOnTime(int32_t onTime_us);
 float mm_to_counts(float mm);
 float counts_to_mm(float counts);
 

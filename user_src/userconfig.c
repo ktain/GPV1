@@ -1,6 +1,7 @@
 #include "stm32f4xx.h"
 #include <stdbool.h>
 
+#include "setup.h"
 #include "motorcontrol.h"
 #include "camera.h"
 #include "display.h"
@@ -18,21 +19,22 @@ void loadSettings(void) {
 	motorMaxPwm = 500;
 	
 	exposureTime_us = 20000;	// exposure time in us < interval
+	servo_period_us = 5000;		// servo period in us
 	
 	// NearCam tilt settings
-	nearCamPwm = 2250;		// Lower == see further 1650
-	nearCamMinPwm = 1500;
-	nearCamMaxPwm = 2250;
+	nearCamOnTime = 2000;		// Lower == see further 1650
+	nearCamMinOnTime = 1500;
+	nearCamMaxOnTime = 2250;
 	
 	// FarCam tilt settings
-	farCamPwm = 1420;		// Lower == move right
-	farCamMinPwm = 1420;	//920
-	farCamMaxPwm = 1420;	//1920
+	farCamOnTime = 1420;		// Lower == move right
+	farCamMinOnTime = 1420;	//920
+	farCamMaxOnTime = 1420;	//1920
 	
 	// Steering settings
-	steeringCenterPwm = 1460;	// Lower == move left more
-	steeringMinPwm = 1140;
-	steeringMaxPwm = 1760;
+	steeringCenterOnTime = 1460;	// Lower == move left more
+	steeringMinOnTime = 1140;
+	steeringMaxOnTime = 1760;
 	steering_Kp = 1.0;
 	steering_Kd = 0.0;
 	

@@ -14,12 +14,12 @@ volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile _Bool isIntegrating = 0;
 
-int32_t nearCamPwm;
-int32_t farCamPwm;
-int32_t nearCamMinPwm;
-int32_t nearCamMaxPwm;
-int32_t farCamMinPwm;
-int32_t farCamMaxPwm;
+int32_t nearCamOnTime;
+int32_t farCamOnTime;
+int32_t nearCamMinOnTime;
+int32_t nearCamMaxOnTime;
+int32_t farCamMinOnTime;
+int32_t farCamMaxOnTime;
 
 /*
  * readCameraStart() - Start the camera read routine
@@ -125,7 +125,7 @@ void detectLinePos(void) {
 			minVal = scanBuf[i];
 		}
 	}
-	threshold = 0.3*(maxVal - minVal) + minVal;
+	threshold = 0.5*(maxVal - minVal) + minVal;
 	
 	linePos = getNearestPeak(scanBuf, 128, threshold, old_pos);
 	old_pos = linePos;
@@ -146,25 +146,25 @@ void detectLinePos(void) {
 }
 
 // Set nearCam tilt servo on-time in microseconds
-void setNearCamPwm(int32_t pwm)
+void setNearCamOnTime(int32_t onTime_us)
 {
-	if (pwm > nearCamMaxPwm)
-		pwm = nearCamMaxPwm;
-	else if (pwm < nearCamMinPwm)
-		pwm = nearCamMinPwm;
+	if (onTime_us > nearCamMaxOnTime)
+		onTime_us = nearCamMaxOnTime;
+	else if (onTime_us < nearCamMinOnTime)
+		onTime_us = nearCamMinOnTime;
 	
-	NEAR_CAM_PWM = pwm;
+	NEAR_CAM_PWM = onTime_us;
 }
 
 // Set farCam tilt servo on-time in microseconds 
-void setFarCamPwm(int32_t pwm)
+void setFarCamOnTime(int32_t onTime_us)
 {
-	if (pwm > farCamMaxPwm)
-		pwm = farCamMaxPwm;
-	else if (pwm < farCamMinPwm)
-		pwm = farCamMinPwm;
+	if (onTime_us > farCamMaxOnTime)
+		onTime_us = farCamMaxOnTime;
+	else if (onTime_us < farCamMinOnTime)
+		onTime_us = farCamMinOnTime;
 	
-	FAR_CAM_PWM = pwm;
+	FAR_CAM_PWM = onTime_us;
 }
 
 // Spatial moving average filter

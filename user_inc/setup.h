@@ -60,4 +60,6 @@ void timer_setup(void);
 void display_setup(void);
 uint32_t readADC(uint32_t channel);
 
+extern int32_t servo_period_us;
+
 #endif

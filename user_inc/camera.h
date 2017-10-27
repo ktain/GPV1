@@ -8,16 +8,19 @@ void updateExposureTime(void);
 void detectLinePos(void);
 void movingAvgFilter(volatile int32_t *arr, int32_t size);
 int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, int32_t old_pos);
+void setNearCamOnTime(int32_t onTime_us);
+void setFarCamOnTime(int32_t onTime_us);
+
 
 extern volatile int32_t scanBuf[128];
 extern volatile float linePos;
 extern volatile int32_t exposureTime_us;
 
-extern int32_t nearCamPwm;
-extern int32_t farCamPwm;
-extern int32_t nearCamMinPwm;
-extern int32_t nearCamMaxPwm;
-extern int32_t farCamMinPwm;
-extern int32_t farCamMaxPwm;
+extern int32_t nearCamOnTime;
+extern int32_t farCamOnTime;
+extern int32_t nearCamMinOnTime;
+extern int32_t nearCamMaxOnTime;
+extern int32_t farCamMinOnTime;
+extern int32_t farCamMaxOnTime;
 
 #endif

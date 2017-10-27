@@ -43,11 +43,11 @@ def get_max_index(arr):
     return max_index
 
 def get_nearest_peak(arr, threshold, old_pos):
+    nearestPos = old_pos
     min_width = 5
-    max_width = 30
+    max_width = 40
     lhs = 0
     rhs = 0
-    line_pos = 0
     min_dist_from_old_pos = int(len(arr))/2 - 1
     peak_count = 0
     
@@ -59,12 +59,12 @@ def get_nearest_peak(arr, threshold, old_pos):
                     rhs = i
                     peak_count = peak_count + 1
                     break
-            if (rhs - lhs >= min_width) and (rhs - lhs <= max_width) and abs(lhs + (rhs - lhs)/2.0 - old_pos) < abs(min_dist_from_old_pos):
-                line_pos = lhs + (rhs - lhs)/2.0
-                min_dist_from_old_pos = abs(lhs + (rhs - lhs)/2.0 - old_pos)
-            
+            if (rhs - lhs >= min_width) and (rhs - lhs <= max_width) and abs(lhs + (rhs - lhs)/2 - old_pos) < abs(min_dist_from_old_pos):
+                nearestPos = lhs + (rhs - lhs)/2
+                min_dist_from_old_pos = abs(lhs + (rhs - lhs)/2 - old_pos)
+                
     print '%d peaks detected'%(peak_count)
-    return line_pos
+    return nearestPos
         
 
 # open the COM5 port at 921600 baud (Nucleo)
@@ -96,7 +96,7 @@ try:
             array128 = mean_filter(array128)
 
             # Calculate threshold
-            threshold = min(array128) + 0.3*(max(array128) - min(array128))
+            threshold = min(array128) + 0.5*(max(array128) - min(array128))
             
             # Update line position
             max_index = get_max_index(array128)

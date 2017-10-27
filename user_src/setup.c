@@ -13,6 +13,8 @@
 #include "camera.h"
 #include "display.h"
 
+int32_t servo_period_us;
+
 /*
  * setup() - calls all other peripheral setup routines
  */
@@ -297,8 +299,8 @@ static void motor_setup(void)
 	//PWM frequency = 84000000 / (19999+1) / (83+1) = 50Hz
 
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (20000) - 1;	// scale PWM duty cycle from 0-19999 ms
-	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;	// 84=50Hz servo updates
+	TIM_TimeBaseStructure.TIM_Period = (servo_period_us) - 1;	// set the servo update period in us
+	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
