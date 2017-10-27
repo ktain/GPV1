@@ -18,11 +18,11 @@ void loadSettings(void) {
 	targetDecX = 5.0;
 	motorMaxPwm = 500;
 	
-	exposureTime_us = 20000;	// exposure time in us < interval
-	servo_period_us = 5000;		// servo period in us
+	exposureTime_us = 20000;	// exposure time in us < interval (max 65536)
+	servo_period_us = 3000;		// servo period in us (max 65536)
 	
 	// NearCam tilt settings
-	nearCamOnTime = 2000;		// Lower == see further 1650
+	nearCamOnTime = 2000;		// Lower == see further
 	nearCamMinOnTime = 1500;
 	nearCamMaxOnTime = 2250;
 	

@@ -79,7 +79,7 @@ void updateSteeringAngle(void)
 	// steeringError from -1.0 to 1.0
 	steeringError = (linePos - 63.5)/63.5;
 	
-	// steering error converted to pwm
+	// steering error normalized to min and max on time
 	if (steeringError < 0)
 		steeringError = steeringError * (steeringCenterOnTime - steeringMinOnTime);
 	else 

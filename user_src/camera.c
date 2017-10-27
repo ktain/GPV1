@@ -179,8 +179,8 @@ void movingAvgFilter(volatile int32_t *arr, int32_t size) {
 }
 
 // Get nearest peak
-int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, int32_t old_pos) {
-	int32_t nearest_pos = old_pos;
+int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, float old_pos) {
+	float nearest_pos = old_pos;
 	int32_t min_width = 5;
 	int32_t max_width = 40;
 	int32_t lhs = 0;
@@ -201,9 +201,9 @@ int32_t getNearestPeak(volatile int32_t *arr, int32_t size, int32_t threshold, i
 				}
 			}
 			if ((rhs-lhs >= min_width) && (rhs-lhs <= max_width) && 
-			    (abs(lhs + (rhs-lhs)/2 - old_pos) < abs(min_dist_from_old_pos))) {
+			    (abs(lhs + (rhs-lhs)/2 - (int32_t)old_pos) < abs(min_dist_from_old_pos))) {
 				nearest_pos = lhs + (rhs-lhs)/2;
-				min_dist_from_old_pos = abs(lhs + (rhs-lhs)/2 - old_pos);
+				min_dist_from_old_pos = abs(lhs + (rhs-lhs)/2 - (int32_t)old_pos);
 			}
 		}
 	}
