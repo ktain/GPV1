@@ -3,6 +3,7 @@
 import serial
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches 
 
 def mean_filter(arr):
     new_arr = np.zeros(len(arr))
@@ -110,6 +111,9 @@ try:
             plt.ylim(0, 3000)
             plt.xlim(0, 127)
             plt.grid(True)
+            red_patch = mpatches.Patch(color='red', alpha=0.5, label='Nearest Peak')
+            green_patch = mpatches.Patch(color='green', alpha=0.5, label='Max Pixel')
+            plt.legend(handles=[red_patch, green_patch])
             
             # Plot threshold
             plt.axhline(y=threshold, linewidth=2, alpha=0.5, color='red')
