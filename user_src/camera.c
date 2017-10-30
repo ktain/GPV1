@@ -18,6 +18,7 @@ int32_t minExposureTime_us;
 int32_t maxExposureTime_us;
 int32_t min_line_width;
 int32_t max_line_width;
+int32_t targetPixelVal;
 
 int32_t nearCamOnTime;
 int32_t farCamOnTime;
@@ -72,21 +73,13 @@ void readCameraStop(void)
 }
 
 /*
- * readCamera() - Start, wait, and stop the camera read routine using systick
+ * readCamera() - Stop, save, and restart the camera read routine
  */
 void readCamera(void)
 {
-	int32_t elapsedTime_us = micros() - startTime_us;
-	if (!isIntegrating) {
-		startTime_us = micros();
-		isIntegrating = 1;
-		readCameraStart();
-	}
-	else if (elapsedTime_us >= exposureTime_us) {
-		readCameraStop();
-		detectLinePos(scanBuf, 128, min_line_width, max_line_width);
-		isIntegrating = 0;
-	}
+	readCameraStop();
+	detectLinePos(scanBuf, 128, min_line_width, max_line_width);
+	readCameraStart();
 }
 
 // Automatic exposure time adjustment
@@ -98,7 +91,7 @@ void updateExposureTime(void)
 		if (scanBuf[i] > maxVal)
 			maxVal = scanBuf[i];
 	}
-	if (maxVal > 3000)
+	if (maxVal > targetPixelVal)
 		exposureTime_us -= 100;
 	else 
 		exposureTime_us += 100;
@@ -117,6 +110,7 @@ void detectLinePos(volatile int32_t *arr, int32_t size, int32_t min_width, int32
 	int32_t threshold;
 	
 	// Spatial moving average filter
+	movingAvgFilter(arr, size);	// ~18us
 	movingAvgFilter(arr, size);
 	
 	// Calculate threshold

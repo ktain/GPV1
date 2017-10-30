@@ -28,7 +28,7 @@ void setup()
 	motor_setup();
 	encoder_setup();
 	camera_setup();
-	//timer_setup();
+	timer_setup(10000);	// period in us
 	display_setup();
 }
 
@@ -441,7 +441,7 @@ static void camera_setup(void)
 	
 }
 
-void timer_setup()
+void timer_setup(int32_t period_us)
 {
 	// Setting up timers and intterupts
 	// https://www.fmf.uni-lj.si/~ponikvar/STM32F407%20project/Ch11%20-%20Interrupts%20and%20Timer.pdf
@@ -454,7 +454,7 @@ void timer_setup()
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			// Enabling global interrupt
 	NVIC_Init(&NVIC_InitStructure);					// Initializing NVIC structure
@@ -462,15 +462,14 @@ void timer_setup()
 	//PWM frequency = 84000000 / (period + 1) / (prescaler + 1)
 	
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (exposureTime_us) - 1;	// stay between (20Hz-1kHz) [50000:1000] 
-	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;
+	TIM_TimeBaseStructure.TIM_Period = (period_us/100) - 1;		// max period 65536 (16-bit). 100us precision
+	TIM_TimeBaseStructure.TIM_Prescaler = (8400) - 1;		// 6.5 seconds max period
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
 	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);	// Enable timer interrupts
 	TIM_Cmd(TIM3, ENABLE);				// Enable timer
-
 }
 
 

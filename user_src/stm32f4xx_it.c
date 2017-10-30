@@ -74,6 +74,8 @@ void TIM3_IRQHandler(void)
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-		
+		readCameraStop();
+		detectLinePos(scanBuf, 128, min_line_width, max_line_width);
+		readCameraStart();
 	}
 }

@@ -20,6 +20,7 @@ extern int32_t minExposureTime_us;
 extern int32_t maxExposureTime_us;
 extern int32_t min_line_width;
 extern int32_t max_line_width;
+extern int32_t targetPixelVal;
 
 extern int32_t nearCamOnTime;
 extern int32_t farCamOnTime;

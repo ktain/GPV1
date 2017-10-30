@@ -56,7 +56,7 @@ void adc_setup(void);
 void motor_setup(void);
 void encoder_setup(void);
 void camera_setup(void);
-void timer_setup(void);
+void timer_setup(int32_t period_us);
 void display_setup(void);
 uint32_t readADC(uint32_t channel);
 

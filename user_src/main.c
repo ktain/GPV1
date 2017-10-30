@@ -15,7 +15,7 @@ void systick(void)
 {
 	int32_t startTime_us = micros();
 	
-	readCamera();
+	//readCamera();
 	if (useSpeedControl) {
 		updateSpeed();
 		speedControl();
