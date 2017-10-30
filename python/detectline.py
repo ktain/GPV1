@@ -45,7 +45,7 @@ def get_max_index(arr):
 
 def get_nearest_peak(arr, threshold, old_pos):
     nearestPos = old_pos
-    min_width = 5
+    min_width = 3
     max_width = 40
     lhs = 0
     rhs = 0

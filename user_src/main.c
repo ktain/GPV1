@@ -22,6 +22,7 @@ void systick(void)
 
 	updateSteeringAngle();
 	updateDisplay();
+
 	
 	// Process UART commands
 	static uint16_t tmp;
@@ -44,7 +45,8 @@ void systick(void)
 		//displayInt(maxTime_us);
 		//displayVoltage();
 		//displayInt(motorPwm);
-		displayInt(EXPOSURE_TIME);
+		//displayInt(EXPOSURE_TIME/1000);
+		displayInt((int)steeringError);
 		i = 0;
 	}
 	
@@ -66,7 +68,7 @@ void button0(void)
 	MTR_ON;
 	
 	enableSpeedControl();
-	setSpeedX(0.3);
+	setSpeedX(1.9);
 	
 	/*
 	while(1) {

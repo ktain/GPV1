@@ -127,7 +127,7 @@ void detectLinePos(volatile int32_t *arr, int32_t size, int32_t min_width, int32
 			minVal = arr[i];
 		}
 	}
-	threshold = 0.5*(maxVal - minVal) + minVal;
+	threshold = 0.9*(maxVal - minVal) + minVal;
 	
 	linePos = getNearestPeak(arr, 128, threshold, old_pos, min_width, max_width);
 	old_pos = linePos;

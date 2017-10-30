@@ -76,14 +76,17 @@ void speedControl(void)
 
 void updateSteeringAngle(void)
 {
-	// steeringError from -1.0 to 1.0
-	steeringError = (linePos - 63.5)/63.5;
-	
+	float tempError;
 	// steering error normalized to min and max on time
-	if (steeringError < 0)
-		steeringError = steeringError * (steeringCenterOnTime - steeringMinOnTime);
+	tempError = (linePos - 63.5)/63.5;	// steeringError from -1.0 to 1.0
+	if (tempError < 0)
+		tempError = tempError * (steeringCenterOnTime - steeringMinOnTime);
 	else 
-		steeringError = steeringError * (steeringMaxOnTime - steeringCenterOnTime);
+		tempError = tempError * (steeringMaxOnTime - steeringCenterOnTime);
+	
+	// apply PD
+	steeringError = steering_Kp*tempError + steering_Kd*(tempError-prevSteeringError);
+	prevSteeringError = steeringError;
 	
 	steeringOnTime = steeringCenterOnTime + steeringError;
 	setSteeringOnTime(steeringOnTime);

@@ -19,16 +19,16 @@ void loadSettings(void) {
 	targetDecX = 5.0;
 	motorMaxPwm = 500;
 	
-	minExposureTime_us = 1000;
-	maxExposureTime_us = 9999;	// max exposure time in us (max 65536)
-	targetPixelVal = 3000;		// target for max pixel value
+	minExposureTime_us = 1000;	// min exposure time in us
+	maxExposureTime_us = 20000;	// max exposure time in us (max 65536)
+	targetPixelVal = 300;		// target for max pixel value (max 4095)
 	servo_period_us = 3000;		// servo period in us (max 65536)
-	min_line_width = 5;
+	min_line_width = 3;
 	max_line_width = 40;
 
 	
 	// NearCam settings
-	nearCamOnTime = 2000;		// Lower == see further
+	nearCamOnTime = 1900;		// Lower == see further
 	nearCamMinOnTime = 1500;
 	nearCamMaxOnTime = 2250;
 	
@@ -40,9 +40,9 @@ void loadSettings(void) {
 	// Steering settings
 	steeringCenterOnTime = 1460;	// Lower == move left more
 	steeringMinOnTime = 1140;
-	steeringMaxOnTime = 1760;
-	steering_Kp = 1.0;
-	steering_Kd = 0.0;
+	steeringMaxOnTime = 1780;
+	steering_Kp = 5.0;
+	steering_Kd = 0.8;
 	
 	// Display settings
 	displayDelay_ms = 200;
