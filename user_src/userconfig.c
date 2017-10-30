@@ -20,7 +20,7 @@ void loadSettings(void) {
 	motorMaxPwm = 500;
 	
 	minExposureTime_us = 1000;
-	maxExposureTime_us = 10000;	// max exposure time in us (max 65536)
+	maxExposureTime_us = 9999;	// max exposure time in us (max 65536)
 	targetPixelVal = 3000;		// target for max pixel value
 	servo_period_us = 3000;		// servo period in us (max 65536)
 	min_line_width = 5;

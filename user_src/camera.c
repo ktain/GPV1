@@ -80,6 +80,7 @@ void readCamera(void)
 	readCameraStop();
 	readCameraStart();
 	detectLinePos(scanBuf, 128, min_line_width, max_line_width);
+	updateExposureTime();
 }
 
 // Automatic exposure time adjustment
@@ -100,6 +101,8 @@ void updateExposureTime(void)
 		exposureTime_us = maxExposureTime_us;
 	else if (exposureTime_us < minExposureTime_us)
 		exposureTime_us = minExposureTime_us;
+	
+	EXPOSURE_TIME = exposureTime_us;
 }
 
 /*

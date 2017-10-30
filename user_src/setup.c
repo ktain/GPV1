@@ -28,7 +28,7 @@ void setup()
 	motor_setup();
 	encoder_setup();
 	camera_setup();
-	timer_setup(10000);	// period in us
+	timer_setup(20000);	// period in us
 	display_setup();
 }
 
@@ -462,8 +462,8 @@ void timer_setup(int32_t period_us)
 	//PWM frequency = 84000000 / (period + 1) / (prescaler + 1)
 	
 	/* Configure TIM Base */
-	TIM_TimeBaseStructure.TIM_Period = (period_us/100) - 1;		// max period 65536 (16-bit). 100us precision
-	TIM_TimeBaseStructure.TIM_Prescaler = (8400) - 1;		// 6.5 seconds max period
+	TIM_TimeBaseStructure.TIM_Period = (period_us) - 1;	// 16-bit (65536)-1
+	TIM_TimeBaseStructure.TIM_Prescaler = (84) - 1;		// 16-bit
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);

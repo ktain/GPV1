@@ -15,7 +15,6 @@ void systick(void)
 {
 	int32_t startTime_us = micros();
 	
-	//readCamera();
 	if (useSpeedControl) {
 		updateSpeed();
 		speedControl();
@@ -23,7 +22,6 @@ void systick(void)
 
 	updateSteeringAngle();
 	updateDisplay();
-	updateExposureTime();
 	
 	// Process UART commands
 	static uint16_t tmp;
@@ -42,10 +40,11 @@ void systick(void)
 	if (i < 200)
 		i++;
 	else {
-		displayInt(maxTime_us);
+		//displayInt(TIM3->CNT);
+		//displayInt(maxTime_us);
 		//displayVoltage();
 		//displayInt(motorPwm);
-		//displayInt(exposureTime_us/10);
+		displayInt(EXPOSURE_TIME);
 		i = 0;
 	}
 	
@@ -53,8 +52,6 @@ void systick(void)
 	int32_t elapsedTime_us = micros() - startTime_us;
 	maxTime_us = (elapsedTime_us > maxTime_us)? elapsedTime_us:maxTime_us;
 	
-	// systick takes about 20us with intermittent 300us peaks
-	// 360us peaks while running
 }
 
 void button0(void)

@@ -40,6 +40,7 @@
 #define CLK_LO		GPIO_ResetBits(GPIOC, GPIO_Pin_9)
 #define SI_HI		GPIO_SetBits(GPIOC, GPIO_Pin_8)
 #define SI_LO		GPIO_ResetBits(GPIOC, GPIO_Pin_8)
+#define EXPOSURE_TIME	(TIM3->ARR)
 
 /* Display MACRO control */
 #define RS_HI	GPIO_SetBits(GPIOB, GPIO_Pin_14)	// select control register
