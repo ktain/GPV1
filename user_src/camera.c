@@ -73,13 +73,13 @@ void readCameraStop(void)
 }
 
 /*
- * readCamera() - Stop, save, and restart the camera read routine
+ * readCamera() - Stop, restart, and save the camera read routine
  */
 void readCamera(void)
 {
 	readCameraStop();
-	detectLinePos(scanBuf, 128, min_line_width, max_line_width);
 	readCameraStart();
+	detectLinePos(scanBuf, 128, min_line_width, max_line_width);
 }
 
 // Automatic exposure time adjustment
