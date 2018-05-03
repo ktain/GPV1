@@ -2,6 +2,7 @@
 #define MENU_H
 
 extern bool busy;
+extern int32_t numOptions;
 extern int32_t menuEncCount;
 extern int32_t ticksPerOption;
 

@@ -10,23 +10,24 @@
 #include "motorcontrol.h"
 #include "setup.h"
 
+int32_t numOptions;
 int32_t menuEncCount = 0;
 int32_t ticksPerOption;
 int32_t option = 0;
 bool busy = 0;
 
 char* options[] = {
-	"0", // 0
-	"1",
-	"2",
-	"3",
-	"4",
-	"5",
-	"6",
-	"7",	// 7
-	"8",
-	"9",
-	"",		// 10
+	"Run 1.0",	// 0
+	"Run 2.0",
+	"Run 3.0",
+	"Run 3.5",
+	"Run 4.0",
+	"Run 4.5",	// 5
+	"Run 5.0",
+	"Run 5.5",
+	"See closer",
+	"See further",
+	"",		// end of options
 };
 
 // Option refresh tracker
@@ -34,7 +35,7 @@ void refreshOptions(void) {
 	bool needToRefresh = 0;
 	if (getEncCount() - menuEncCount > ticksPerOption) {
 		option++;
-		if (option > NUMOPTIONS - 1) {
+		if (option > numOptions - 1) {
 			option = 0;
 		}
 		menuEncCount = getEncCount();
@@ -43,7 +44,7 @@ void refreshOptions(void) {
 	else if (getEncCount() - menuEncCount < -ticksPerOption) {
 		option--;
 		if (option < 0) {
-			option = NUMOPTIONS - 1;
+			option = numOptions - 1;
 		}
 		menuEncCount = getEncCount();
 		needToRefresh = 1;
@@ -57,10 +58,10 @@ void refreshOptions(void) {
 
 void enter(void) {
 	busy = 1;
-	delay_ms(500);
 	
 	switch(option) {
-		case 0: 
+		case 0: // Run 1.0
+			delay_ms(500);
 			SERVO_ON;
 			setNearCamOnTime(nearCamOnTime); 
 			delay_ms(500);
@@ -68,9 +69,9 @@ void enter(void) {
 			MTR_ON;
 			enableSpeedControl();
 			setSpeedX(1.0);
-
 			break;
-		case 1:
+		case 1:	// Run 2.0
+			delay_ms(500);
 			SERVO_ON;
 			setNearCamOnTime(nearCamOnTime); 
 			delay_ms(500);
@@ -78,40 +79,80 @@ void enter(void) {
 			MTR_ON;
 			enableSpeedControl();
 			setSpeedX(2.0);
-		
 			break;
-		case 2:
+		case 2:	// Run 3.0
+			delay_ms(500);
 			SERVO_ON;
-			setNearCamOnTime(nearCamOnTime); 
+			setNearCamOnTime(nearCamOnTime);
 			delay_ms(500);
 			NEAR_CAM_PWM = 0;
 			MTR_ON;
 			enableSpeedControl();
 			setSpeedX(3.0);
-		
 			break;
-		case 3:
-
+		case 3:	// Run 3.5
+			delay_ms(500);
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(3.5);
 			break;
-		case 4:
-
+		case 4: // Run 4.0
+			delay_ms(500);
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(4.0);
 			break;
-		case 5:
-			
+		case 5:	// Run 4.5
+			delay_ms(500);
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(4.5);
 			break;
-		case 6:
-		
+		case 6:	// Run 5.0
+			delay_ms(500);
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(5.0);
 			break;
-		case 7: 
-		
+		case 7: // Run 5.5
+			delay_ms(500);
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(5.5);
 			break;
-		case 8:	
-			
+		case 8:	// Adjust camera tilt closer
+			nearCamOnTime += 50;
+			setNearCamOnTime(nearCamOnTime);
+			displayInt(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
 			break;
-		case 9:
-			
-			break;
-		case 10:
+		case 9: // Adjust camera tilt further
+			nearCamOnTime -= 50;
+			setNearCamOnTime(nearCamOnTime);
+			displayInt(nearCamOnTime);
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
 			break;
 		
 		default:

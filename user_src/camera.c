@@ -114,7 +114,7 @@ void detectLinePos(volatile int32_t *arr, int32_t size, int32_t min_width, int32
 	int32_t threshold;
 	
 	// Spatial moving average filter
-	movingAvgFilter(arr, size);	// ~18us -o1
+	movingAvgFilter(arr, size);	// ~18us no optimizations
 	movingAvgFilter(arr, size);
 	
 	// Calculate threshold
@@ -156,6 +156,7 @@ void setNearCamOnTime(int32_t onTime_us)
 	else if (onTime_us < nearCamMinOnTime)
 		onTime_us = nearCamMinOnTime;
 	
+	nearCamOnTime = onTime_us;
 	NEAR_CAM_PWM = onTime_us;
 }
 
@@ -167,6 +168,7 @@ void setFarCamOnTime(int32_t onTime_us)
 	else if (onTime_us < farCamMinOnTime)
 		onTime_us = farCamMinOnTime;
 	
+	farCamOnTime = onTime_us;
 	FAR_CAM_PWM = onTime_us;
 }
 
