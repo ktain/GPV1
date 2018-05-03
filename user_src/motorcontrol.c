@@ -1,5 +1,7 @@
 #include "stm32f4xx.h"
 
+#include <stdbool.h>
+
 #include "setup.h"
 #include "userconfig.h"
 #include "motorcontrol.h"
@@ -21,8 +23,8 @@ float counts_per_mm;
 volatile float kpX;
 volatile float kdX;
 
-volatile _Bool useSpeedControl = 0;
-volatile _Bool useSensorFeedback = 0;
+volatile bool useSpeedControl = 0;
+volatile bool useSensorFeedback = 0;
 
 volatile float prevEncCount = 0;
 volatile float curEncCount = 0;
@@ -78,7 +80,7 @@ void updateSteeringAngle(void)
 {
 	float tempError;
 	// steering error normalized to min and max on time
-	tempError = (linePos - 63.5)/63.5;	// steeringError from -1.0 to 1.0
+	tempError = (linePos - 63.5f)/63.5f;	// steeringError from -1.0 to 1.0
 	if (tempError < 0)
 		tempError = tempError * (steeringCenterOnTime - steeringMinOnTime);
 	else 

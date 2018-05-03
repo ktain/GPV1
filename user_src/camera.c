@@ -2,6 +2,7 @@
 #include "stm32f4xx_it.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "setup.h"
 #include "delay.h"
@@ -12,7 +13,7 @@ volatile int32_t scanBuf[128];
 volatile float linePos = 0;
 volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
-volatile _Bool isIntegrating = 0;
+volatile bool isIntegrating = 0;
 
 int32_t minExposureTime_us;
 int32_t maxExposureTime_us;

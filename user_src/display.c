@@ -27,7 +27,8 @@ void writeControlRegister(char c)
 
 
 void display(char* str) {
-
+	int32_t numChars = 0;
+	
 	// Change to new string. strcmp evaluates to true if not equal
 	if (strcmp(displayStr,str)) {
 		strcpy(displayStr, str);
@@ -41,23 +42,32 @@ void display(char* str) {
 	// Static Display
 	int32_t i;
 	for (i = 0; displayStr[i] != '\0'; i++);	// count characters
-	if (i <= 4) {
-		for(int32_t i = 0; i < 4; i++) {
-			ptr = &fontTable[displayStr[i]*5];
-			for(int32_t j = 0; j < 5; j++) {
+	numChars = i;
+	if (numChars <= 4) {
+		for(int32_t j = 0; j < numChars; j++) {
+			ptr = &fontTable[displayStr[j]*5];
+			for(int32_t k = 0; k < 5; k++) {
 				while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
 				SPI_I2S_SendData(SPI2, *ptr);
 				ptr++;
 			}
 		}
-	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
-	while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) == SET);
-	CE_HI;	//latch on
+		for(int32_t j = numChars; j < 4; j++) {
+			ptr = &fontTable[32*5];
+			for(int32_t k = 0; k < 5; k++) {
+				while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+				SPI_I2S_SendData(SPI2, *ptr);
+				ptr++;
+			}
+		}
+		while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
+		while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) == SET);
+		CE_HI;	//latch on
 	}
 
 
 	// Scroll display repeatedly
-	if (displayStr[displayIndex+3] == '\0') {
+	else if (displayStr[displayIndex+3] == '\0') {
 		displayIndex = 0;
 		return;
 	}
