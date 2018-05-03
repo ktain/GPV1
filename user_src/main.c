@@ -16,6 +16,16 @@ void systick(void)
 {
 	int32_t startTime_us = micros();
 	
+	if (isRunning) {
+		// go faster on straights
+		if (linePos > 64-centerRange/2 && linePos < 64+centerRange/2) {
+			setSpeedX(straightSpeed);
+		}
+		else {
+			setSpeedX(turnSpeed);
+		}
+	}
+		
 	if (useSpeedControl) {
 		updateSpeed();
 		speedControl();
@@ -29,6 +39,7 @@ void systick(void)
 		tmp = USART_ReceiveData(USART1);
 		// Kill switch
 		if (tmp == 's') {
+			isRunning = 0;
 			STEERING_PWM = 0;
 			setSpeedX(0);
 			disableSpeedControl();
@@ -36,7 +47,7 @@ void systick(void)
 	}
 	
 	// Refresh display
-	if (!busy && curSpeedX == 0) {
+	if (!busy && !isRunning) {
 		refreshOptions();
 		updateDisplay();
 	}
@@ -51,11 +62,13 @@ void button0(void)
 
 void button1(void)
 {
+	isRunning = 0;
 	setSpeedX(0);
 	delay_ms(1000);
 	STEERING_PWM = 0;
 	SERVO_OFF;
 	disableSpeedControl();
+
 }
 
 int main(void)

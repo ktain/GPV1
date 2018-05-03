@@ -15,6 +15,7 @@ void setFarCamOnTime(int32_t onTime_us);
 extern volatile int32_t scanBuf[128];
 extern volatile float linePos;
 extern volatile int32_t exposureTime_us;
+extern volatile int32_t centerRange;
 
 extern int32_t minExposureTime_us;
 extern int32_t maxExposureTime_us;

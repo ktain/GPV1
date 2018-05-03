@@ -14,6 +14,7 @@ volatile float linePos = 0;
 volatile int32_t exposureTime_us = 0;
 volatile int32_t startTime_us = 0;
 volatile bool isIntegrating = 0;
+volatile int32_t centerRange;
 
 int32_t minExposureTime_us;
 int32_t maxExposureTime_us;

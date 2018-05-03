@@ -42,6 +42,9 @@ volatile float posPwmX = 0;
 volatile float motorPwm = 0;
 volatile float motorMaxPwm = 0;
 
+volatile float straightSpeed = 0;
+volatile float turnSpeed = 0;
+
 void updateSpeed(void) 
 {
 	curEncCount = getEncCount();

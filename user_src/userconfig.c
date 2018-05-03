@@ -28,6 +28,7 @@ void loadSettings(void) {
 	servo_period_us = 3000;		// servo period in us (max 65536)
 	min_line_width = 3;
 	max_line_width = 40;
+	centerRange = 20;		// +-20
 
 	// NearCam (single cam) settings
 	nearCamOnTime = 1800;			// Lower == see further

@@ -39,6 +39,9 @@ extern volatile float motorMaxPwm;
 extern volatile float kpX;
 extern volatile float kdX;
 
+extern volatile float straightSpeed;
+extern volatile float turnSpeed;
+
 void updateSteeringAngle(void);
 void updateSpeed(void);
 void speedControl(void);
