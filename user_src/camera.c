@@ -114,7 +114,7 @@ void detectLinePos(volatile int32_t *arr, int32_t size, int32_t min_width, int32
 	int32_t threshold;
 	
 	// Spatial moving average filter
-	movingAvgFilter(arr, size);	// ~18us
+	movingAvgFilter(arr, size);	// ~18us -o1
 	movingAvgFilter(arr, size);
 	
 	// Calculate threshold

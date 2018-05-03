@@ -5,6 +5,7 @@
 #include "motorcontrol.h"
 #include "camera.h"
 #include "display.h"
+#include "menu.h"
 
 /*
  * loadSettings() - Load settings before setting up peripherals
@@ -47,6 +48,9 @@ void loadSettings(void) {
 	// Display settings
 	displayDelay_ms = 200;
 	displayBrightness = 10;	//0-15
+	
+	// Menu settings
+	ticksPerOption = 1000;
 	
 }
 

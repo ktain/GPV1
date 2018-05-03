@@ -11,6 +11,7 @@
 #include "setup.h"
 
 int32_t menuEncCount = 0;
+int32_t ticksPerOption;
 int32_t option = 0;
 bool busy = 0;
 
@@ -25,12 +26,13 @@ char* options[] = {
 	"7",	// 7
 	"8",
 	"9",
+	"",		// 10
 };
 
 // Option refresh tracker
 void refreshOptions(void) {
 	bool needToRefresh = 0;
-	if (getEncCount() - menuEncCount > 2000) {
+	if (getEncCount() - menuEncCount > ticksPerOption) {
 		option++;
 		if (option > NUMOPTIONS - 1) {
 			option = 0;
@@ -38,7 +40,7 @@ void refreshOptions(void) {
 		menuEncCount = getEncCount();
 		needToRefresh = 1;
 	}
-	else if (getEncCount() - menuEncCount < -2000) {
+	else if (getEncCount() - menuEncCount < -ticksPerOption) {
 		option--;
 		if (option < 0) {
 			option = NUMOPTIONS - 1;
@@ -66,13 +68,27 @@ void enter(void) {
 			MTR_ON;
 			enableSpeedControl();
 			setSpeedX(1.0);
-		
+
 			break;
 		case 1:
-
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime); 
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(2.0);
+		
 			break;
 		case 2:
-
+			SERVO_ON;
+			setNearCamOnTime(nearCamOnTime); 
+			delay_ms(500);
+			NEAR_CAM_PWM = 0;
+			MTR_ON;
+			enableSpeedControl();
+			setSpeedX(3.0);
+		
 			break;
 		case 3:
 
